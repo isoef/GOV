@@ -4,193 +4,234 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>لوحة معلومات الحوكمة</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================
-       Governance Dashboard 2.0 (Single-file)
-       Modern + Formal | RTL | Stable-ish data
-       ========================= */
     :root{
-      --c1:#006250;   /* primary */
-      --c2:#273233;   /* dark */
-      --c3:#15adff;   /* accent */
+      --أساسي:#006250;
+      --داكن:#273233;
+      --تمييز:#15adff;
 
-      --bg:#ffffff;
-      --panel:#f7f9fb;
-      --card:#ffffff;
-      --line:#e6edf2;
-      --muted:#6b7280;
+      --خلفية:#ffffff;
+      --لوحة:#f7f9fb;
+      --بطاقة:#ffffff;
+      --حد:#e6edf2;
+      --نص_ثانوي:#6b7280;
 
-      --r:22px;
-      --shadow:0 16px 44px rgba(39,50,51,.10);
-      --shadowSoft:0 18px 40px rgba(39,50,51,.12);
-      --shadowFocus:0 20px 48px rgba(21,173,255,.14);
+      --نصف_قطر:22px;
+      --ظل:0 16px 44px rgba(39,50,51,.10);
+      --ظل_ناعم:0 18px 40px rgba(39,50,51,.12);
+      --ظل_تركيز:0 20px 48px rgba(21,173,255,.14);
 
-      --ok: rgba(0,98,80,.10);
-      --warn: rgba(21,173,255,.12);
-      --bad: rgba(39,50,51,.10);
+      --حالة_مستقر: rgba(0,98,80,.10);
+      --حالة_مراقبة: rgba(21,173,255,.12);
+      --حالة_تدخل: rgba(39,50,51,.10);
 
-      --maxw: 1200px;
+      --عرض_اقصى: 1260px;
     }
 
     body{
       margin:0;
-      background:var(--bg);
-      font-family:"Almarai", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--c2);
+      background:var(--خلفية);
+      font-family:"Almarai", Arial, sans-serif;
+      color:var(--داكن);
     }
     *{box-sizing:border-box}
 
-    .gd-wrap{
-      max-width:var(--maxw);
-      margin:0 auto;
-      padding:22px 14px 34px;
+    body.نمط-داكن{
+      --خلفية:#0b1012;
+      --لوحة:#10181b;
+      --بطاقة:#0f1619;
+      --حد:#1c2a2f;
+      --نص_ثانوي:#a8b3b9;
+
+      --ظل:0 16px 44px rgba(0,0,0,.45);
+      --ظل_ناعم:0 18px 40px rgba(0,0,0,.50);
+      --ظل_تركيز:0 20px 48px rgba(21,173,255,.18);
     }
 
-    /* =========================
-       HEADER
-       ========================= */
-    .gd-header{
+    .حاوية{
+      max-width:var(--عرض_اقصى);
+      margin:0 auto;
+      padding:18px 14px 16px;
+    }
+
+    /* أزرار جانبية */
+    .شريط-جانبي{
+      position:fixed;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:999;
+    }
+    .زر-عائم{
+      border:1px solid var(--حد);
+      background:linear-gradient(135deg, rgba(21,173,255,.14), rgba(0,98,80,.12), var(--بطاقة));
+      color:var(--داكن);
+      border-radius:16px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:12px;
+      box-shadow:var(--ظل);
+      cursor:pointer;
+      min-width:132px;
+      text-align:center;
+      user-select:none;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .زر-عائم:hover{ transform:translateY(-2px); box-shadow:var(--ظل_ناعم); }
+
+    /* هيدر */
+    .هيدر{
       display:flex;
       flex-wrap:wrap;
       gap:12px 14px;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
-    .gd-title{
+    .عنوان{
       display:flex;
       flex-direction:column;
       gap:6px;
-      min-width:240px;
+      min-width:290px;
     }
-    .gd-title h1{
+    .عنوان h1{
       margin:0;
       font-size:18px;
       font-weight:900;
       letter-spacing:.2px;
-      color:var(--c2);
     }
-    .gd-sub{
+    .وصف{
       font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-      line-height:1.7;
+      color:var(--نص_ثانوي);
+      font-weight:800;
+      line-height:1.9;
+      max-width:780px;
     }
 
-    .gd-controls{
+    /* أدوات التحكم */
+    .تحكم{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
       justify-content:flex-start;
     }
-
-    .pill{
+    .حبة{
       display:flex;
       gap:8px;
       align-items:center;
       padding:8px;
-      background:var(--panel);
-      border:1px solid var(--line);
+      background:var(--لوحة);
+      border:1px solid var(--حد);
       border-radius:999px;
     }
-
     button{
       border:none;
       background:transparent;
-      color:var(--c2);
+      color:var(--داكن);
       padding:8px 14px;
       border-radius:999px;
       cursor:pointer;
       font-family:inherit;
       font-size:13px;
-      font-weight:800;
-      transition:transform .18s ease, box-shadow .18s ease, background .25s ease, color .25s ease;
+      font-weight:900;
+      transition:transform .18s ease, box-shadow .18s ease, background .22s ease, color .22s ease;
       outline:none;
       user-select:none;
       white-space:nowrap;
     }
     button:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 18px rgba(39,50,51,.10);
-      background:#eef7ff;
+      box-shadow:0 10px 18px rgba(39,50,51,.12);
+      background:rgba(21,173,255,.10);
     }
-    button.active{
-      background:linear-gradient(135deg,var(--c2),var(--c1));
+    body.نمط-داكن button:hover{ box-shadow:0 10px 18px rgba(0,0,0,.35); }
+    button.نشط{
+      background:linear-gradient(135deg,var(--داكن),var(--أساسي));
       color:#fff;
       box-shadow:0 16px 30px rgba(0,98,80,.22);
       transform:translateY(-1px);
     }
 
-    .gd-dates{
+    .نطاق-تواريخ{
       display:flex; gap:8px; align-items:center;
       padding:8px 10px;
-      background:var(--panel);
-      border:1px solid var(--line);
+      background:var(--لوحة);
+      border:1px solid var(--حد);
       border-radius:999px;
     }
-    .gd-dates label{
-      font-size:12px; color:var(--muted); font-weight:800;
+    .نطاق-تواريخ label{
+      font-size:12px;
+      color:var(--نص_ثانوي);
+      font-weight:900;
     }
     input[type="date"]{
-      border:1px solid var(--line);
-      background:#fff;
+      border:1px solid var(--حد);
+      background:var(--بطاقة);
       padding:6px 10px;
       border-radius:999px;
       font-family:inherit;
       font-size:12px;
-      color:var(--c2);
+      color:var(--داكن);
       outline:none;
+      font-weight:900;
     }
 
-    .gd-select{
-      display:flex; gap:8px; align-items:center;
+    .كتلة-فلاتر{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .مجموعة-فلاتر{
+      display:none;
+      gap:10px;
+      align-items:center;
       padding:8px 10px;
-      background:var(--panel);
-      border:1px solid var(--line);
+      background:var(--لوحة);
+      border:1px solid var(--حد);
       border-radius:999px;
     }
-    .gd-select select{
-      border:1px solid var(--line);
-      background:#fff;
+    .مجموعة-فلاتر.تظهر{ display:flex; }
+
+    select{
+      border:1px solid var(--حد);
+      background:var(--بطاقة);
       padding:7px 10px;
       border-radius:999px;
       font-family:inherit;
       font-size:12px;
-      color:var(--c2);
+      color:var(--داكن);
       outline:none;
       min-width:170px;
-      font-weight:800;
+      font-weight:900;
+    }
+    .زر-إطار{
+      border:1px solid var(--حد);
+      background:var(--بطاقة);
     }
 
-    .gd-actions{
-      display:flex; gap:8px; align-items:center;
-    }
-    .gd-actions .ghost{
-      border:1px solid var(--line);
-      background:#fff;
-    }
-    .gd-actions .ghost.active{
-      background:linear-gradient(135deg,var(--c3),var(--c1));
-      box-shadow:0 16px 30px rgba(21,173,255,.16);
-    }
-
-    /* =========================
-       EXEC SUMMARY
-       ========================= */
-    .gd-summary{
-      border:1px solid var(--line);
-      border-radius:var(--r);
-      background:linear-gradient(135deg, rgba(21,173,255,.10), rgba(0,98,80,.08), #fff);
-      box-shadow:var(--shadow);
+    /* ملخص */
+    .ملخص{
+      border:1px solid var(--حد);
+      border-radius:var(--نصف_قطر);
+      background:linear-gradient(135deg, rgba(21,173,255,.10), rgba(0,98,80,.08), rgba(255,255,255,.82));
+      box-shadow:var(--ظل);
       padding:16px;
       position:relative;
       overflow:hidden;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
-    .gd-summary::before{
+    body.نمط-داكن .ملخص{
+      background:linear-gradient(135deg, rgba(21,173,255,.08), rgba(0,98,80,.08), rgba(15,22,25,.92));
+    }
+    .ملخص::before{
       content:"";
       position:absolute; inset:-2px;
       background:
@@ -199,7 +240,7 @@
       pointer-events:none;
     }
 
-    .sum-top{
+    .ملخص-أعلى{
       position:relative;
       display:flex;
       flex-wrap:wrap;
@@ -208,72 +249,54 @@
       justify-content:space-between;
       margin-bottom:12px;
     }
-    .sum-main .label{
-      font-size:13px;
-      color:var(--muted);
+    .ملخص-وسم{
+      font-size:12px;
+      color:var(--نص_ثانوي);
       font-weight:900;
     }
-    .sum-main .value{
-      font-size:42px;
+    .ملخص-قيمة{
+      font-size:44px;
       font-weight:900;
       line-height:1;
-      color:#000;
     }
 
-    .chip{
+    .شارة{
       position:relative;
       display:inline-flex;
       align-items:center;
       gap:8px;
-      background:#fff;
-      border:1px solid var(--line);
+      background:var(--بطاقة);
+      border:1px solid var(--حد);
       border-radius:999px;
       padding:7px 12px;
       font-size:12px;
       font-weight:900;
-      color:var(--c2);
       width:max-content;
     }
-    .dot{
+    .نقطة{
       width:10px; height:10px; border-radius:50%;
-      background:var(--c1);
+      background:var(--أساسي);
       box-shadow:0 0 0 6px rgba(0,98,80,.10);
     }
-
-    .bar{
+    .شريط{
       height:10px;
-      background:#eef2f6;
+      background:rgba(230,237,242,.7);
       border-radius:999px;
       overflow:hidden;
-      border:1px solid var(--line);
+      border:1px solid var(--حد);
       position:relative;
     }
-    .bar > span{
+    body.نمط-داكن .شريط{ background:rgba(28,42,47,.7); }
+    .شريط > span{
       display:block;
       height:100%;
       width:0%;
       border-radius:999px;
-      background:linear-gradient(90deg,var(--c1),var(--c3));
+      background:linear-gradient(90deg,var(--أساسي),var(--تمييز));
       transition:width .65s ease;
-      position:relative;
-      overflow:hidden;
     }
-    .bar > span::after{
-      content:"";
-      position:absolute; top:0; left:-45%;
-      width:45%; height:100%;
-      background:linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
-      opacity:0;
-      transition:opacity .2s ease;
-    }
-    .gd-summary:hover .bar > span::after,
-    .card:hover .bar > span::after{
-      opacity:1;
-      animation:flow 2.4s linear infinite;
-    }
-    @keyframes flow{0%{left:-45%}100%{left:120%}}
 
-    .sum-kpis{
+    .ملخص-مربعات{
       position:relative;
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
@@ -281,346 +304,310 @@
       margin-top:12px;
     }
     @media (max-width: 980px){
-      .sum-kpis{grid-template-columns:repeat(2, minmax(0,1fr));}
+      .ملخص-مربعات{grid-template-columns:repeat(2, minmax(0,1fr));}
     }
     @media (max-width: 520px){
-      .sum-kpis{grid-template-columns:1fr;}
+      .ملخص-مربعات{grid-template-columns:1fr;}
     }
-    .sum-box{
-      background:#fff;
-      border:1px solid var(--line);
+    .مربع{
+      background:var(--بطاقة);
+      border:1px solid var(--حد);
       border-radius:16px;
       padding:12px;
       transition:transform .18s ease, box-shadow .18s ease;
     }
-    .sum-box:hover{
-      transform:translateY(-2px);
-      box-shadow:0 16px 30px rgba(39,50,51,.10);
+    .مربع:hover{ transform:translateY(-2px); box-shadow:0 16px 30px rgba(39,50,51,.10); }
+    body.نمط-داكن .مربع:hover{ box-shadow:0 16px 30px rgba(0,0,0,.45); }
+    .مربع .سطر{
+      font-size:12px; color:var(--نص_ثانوي); font-weight:900;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:8px;
     }
-    .sum-box .t{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:900;
-      margin-bottom:6px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .sum-box .n{
-      font-size:18px;
-      font-weight:900;
-      color:#000;
-      display:flex;
-      align-items:baseline;
-      gap:6px;
-    }
-    .sum-box .unit{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:900;
-    }
-    .trend{
-      font-size:12px;
-      font-weight:900;
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--c2);
-      white-space:nowrap;
-    }
-    .trend.up{border-color:rgba(0,98,80,.25); background:rgba(0,98,80,.06)}
-    .trend.down{border-color:rgba(39,50,51,.25); background:rgba(39,50,51,.06)}
-    .trend.flat{border-color:rgba(21,173,255,.25); background:rgba(21,173,255,.06)}
+    .مربع .رقم{ font-size:18px; font-weight:900; }
 
-    /* =========================
-       GRID
-       ========================= */
-    .grid{
+    /* بطاقات المؤشرات */
+    .شبكة{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(275px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(310px, 1fr));
       gap:14px;
       margin-top:10px;
     }
-
-    .card{
-      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.05), #fff);
-      border:1px solid var(--line);
-      border-radius:var(--r);
+    .بطاقة{
+      border:1px solid var(--حد);
+      border-radius:var(--نصف_قطر);
       padding:16px;
       box-shadow:0 10px 26px rgba(39,50,51,.07);
       cursor:pointer;
       transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
       position:relative;
       overflow:hidden;
+      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.05), rgba(255,255,255,.88));
     }
-    .card:hover{
-      transform:translateY(-4px);
-      border-color:rgba(21,173,255,.35);
-      box-shadow:var(--shadowSoft);
+    body.نمط-داكن .بطاقة{
+      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.06), rgba(15,22,25,.94));
+      box-shadow:0 10px 26px rgba(0,0,0,.35);
     }
-    .card.active{
-      border-color:rgba(0,98,80,.40);
-      box-shadow:var(--shadowFocus);
-      transform:translateY(-2px);
-    }
+    .بطاقة:hover{ transform:translateY(-4px); border-color:rgba(21,173,255,.35); box-shadow:var(--ظل_ناعم); }
+    .بطاقة.نشط{ border-color:rgba(0,98,80,.40); box-shadow:var(--ظل_تركيز); transform:translateY(-2px); }
 
-    /* subtle status tint */
-    .card[data-status="good"]{ background:linear-gradient(135deg, var(--ok), rgba(255,255,255,.9)); }
-    .card[data-status="warn"]{ background:linear-gradient(135deg, var(--warn), rgba(255,255,255,.9)); }
-    .card[data-status="bad"] { background:linear-gradient(135deg, var(--bad), rgba(255,255,255,.92)); }
+    .بطاقة[data-حالة="مستقر"]{ background:linear-gradient(135deg, var(--حالة_مستقر), rgba(255,255,255,.92)); }
+    .بطاقة[data-حالة="مراقبة"]{ background:linear-gradient(135deg, var(--حالة_مراقبة), rgba(255,255,255,.92)); }
+    .بطاقة[data-حالة="تدخل"]{ background:linear-gradient(135deg, var(--حالة_تدخل), rgba(255,255,255,.94)); }
+    body.نمط-داكن .بطاقة[data-حالة="مستقر"]{ background:linear-gradient(135deg, rgba(0,98,80,.14), rgba(15,22,25,.94)); }
+    body.نمط-داكن .بطاقة[data-حالة="مراقبة"]{ background:linear-gradient(135deg, rgba(21,173,255,.14), rgba(15,22,25,.94)); }
+    body.نمط-داكن .بطاقة[data-حالة="تدخل"]{ background:linear-gradient(135deg, rgba(39,50,51,.18), rgba(15,22,25,.94)); }
 
-    .top{
+    .علوي{
       display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
     }
-    .name{
-      font-size:13px; font-weight:900; color:var(--c2);
-      line-height:1.55;
+    .اسم{
+      font-size:13px; font-weight:900; line-height:1.7;
     }
-    .meta{
-      font-size:12px; color:var(--muted); font-weight:800;
-      margin-top:4px;
-      line-height:1.6;
+    .وسوم{
+      font-size:12px; color:var(--نص_ثانوي); font-weight:900;
+      margin-top:4px; line-height:1.8;
     }
-    .value{
-      font-size:34px;
+    .قيمة-بطاقة{
+      font-size:40px;
       font-weight:900;
-      color:#000;
       line-height:1.1;
-      text-align:left;
       white-space:nowrap;
       display:flex;
       align-items:baseline;
       gap:6px;
+      text-align:left;
     }
-    .u{
-      font-size:12px; color:var(--muted); font-weight:900;
-    }
+    .وحدة{ font-size:12px; color:var(--نص_ثانوي); font-weight:900; }
 
-    .status{
+    .صف-حالة{
       margin-top:10px;
       display:flex; align-items:center; justify-content:space-between;
       gap:10px;
     }
-    .chipStatus{
+    .شارة-حالة{
       display:inline-flex; align-items:center; gap:8px;
       padding:6px 12px;
       border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
+      border:1px solid var(--حد);
+      background:var(--بطاقة);
       font-size:12px;
       font-weight:900;
-      color:var(--c2);
       width:max-content;
     }
-    .s-dot{
+    .نقطة-صغيرة{
       width:8px; height:8px; border-radius:50%;
-      background:var(--c1);
+      background:var(--أساسي);
       box-shadow:0 0 0 5px rgba(0,98,80,.10);
     }
-    .chipStatus.warn .s-dot{background:var(--c3); box-shadow:0 0 0 5px rgba(21,173,255,.12)}
-    .chipStatus.bad  .s-dot{background:var(--c2); box-shadow:0 0 0 5px rgba(39,50,51,.12)}
+    .شارة-حالة.مراقبة .نقطة-صغيرة{background:var(--تمييز); box-shadow:0 0 0 5px rgba(21,173,255,.12)}
+    .شارة-حالة.تدخل .نقطة-صغيرة{background:var(--داكن); box-shadow:0 0 0 5px rgba(39,50,51,.12)}
 
-    .mini{
+    .خط-تقدم{
+      margin-top:10px;
+      height:10px;
+      background:rgba(230,237,242,.7);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid var(--حد);
+    }
+    body.نمط-داكن .خط-تقدم{ background:rgba(28,42,47,.7); }
+    .خط-تقدم span{
+      display:block; height:100%; width:0%;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--أساسي),var(--تمييز));
+      transition:width .6s ease;
+    }
+
+    .تفاصيل-مختصرة{
       margin-top:10px;
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:8px;
     }
-    .mini .b{
-      background:#fff;
-      border:1px solid var(--line);
+    @media (max-width: 980px){ .تفاصيل-مختصرة{grid-template-columns:repeat(2, minmax(0,1fr));} }
+    @media (max-width: 520px){ .تفاصيل-مختصرة{grid-template-columns:1fr;} }
+
+    .حقل{
+      background:var(--بطاقة);
+      border:1px solid var(--حد);
       border-radius:14px;
       padding:10px;
-      min-height:64px;
+      min-height:72px;
     }
-    .mini .b span{
-      display:block; font-size:11px; color:var(--muted); font-weight:900;
-      margin-bottom:4px;
+    .حقل span{
+      display:block; font-size:11px; color:var(--نص_ثانوي); font-weight:900; margin-bottom:4px;
     }
-    .mini .b strong{
-      display:block; font-size:13px; color:var(--c2); font-weight:900;
-      line-height:1.4;
+    .حقل strong{
+      display:block; font-size:13px; font-weight:900; line-height:1.6;
     }
-    .num{color:#000}
 
-    /* =========================
-       DETAILS
-       ========================= */
-    .details{
+    /* تفاصيل أسفل */
+    .تفاصيل{
       margin-top:14px;
-      border:1px solid var(--line);
-      border-radius:var(--r);
-      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.05), #fff);
-      box-shadow:var(--shadow);
+      border:1px solid var(--حد);
+      border-radius:var(--نصف_قطر);
+      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.05), rgba(255,255,255,.88));
+      box-shadow:var(--ظل);
       padding:18px;
-      position:relative;
-      overflow:hidden;
     }
-    .details h3{
-      margin:0 0 8px;
-      font-size:16px;
-      font-weight:900;
-      color:var(--c2);
-      line-height:1.6;
+    body.نمط-داكن .تفاصيل{
+      background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.06), rgba(15,22,25,.94));
     }
-    .hint{
-      margin:0 0 12px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.8;
-      font-weight:800;
-    }
-
-    .detailsGrid{
+    .تفاصيل h3{ margin:0 0 8px; font-size:16px; font-weight:900; line-height:1.6; }
+    .ملاحظة{ margin:0 0 12px; font-size:12px; color:var(--نص_ثانوي); line-height:1.9; font-weight:900; }
+    .شبكة-تفاصيل{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
       gap:12px;
     }
-    .box{
-      background:#fff;
-      border:1px solid var(--line);
+    .صندوق{
+      background:var(--بطاقة);
+      border:1px solid var(--حد);
       border-radius:16px;
       padding:14px;
       transition:transform .18s ease, box-shadow .18s ease;
     }
-    .box:hover{ transform:translateY(-2px); box-shadow:0 16px 30px rgba(39,50,51,.10); }
-    .box span{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
+    .صندوق:hover{ transform:translateY(-2px); box-shadow:0 16px 30px rgba(39,50,51,.10); }
+    body.نمط-داكن .صندوق:hover{ box-shadow:0 16px 30px rgba(0,0,0,.45); }
+    .صندوق span{ display:block; font-size:12px; color:var(--نص_ثانوي); font-weight:900; margin-bottom:6px; }
+    .صندوق strong{ display:block; font-size:14px; font-weight:900; line-height:1.95; white-space:pre-line; }
+
+    /* وضع العرض */
+    body.وضع-عرض .تحكم{display:none}
+    body.وضع-عرض .حاوية{max-width:1400px}
+    body.وضع-عرض .شبكة{grid-template-columns:repeat(auto-fit, minmax(330px, 1fr))}
+    body.وضع-عرض .قيمة-بطاقة{font-size:44px}
+
+    /* تذييل */
+    .تذييل{
+      max-width:var(--عرض_اقصى);
+      margin:0 auto;
+      padding:10px 14px 18px;
+      color:var(--نص_ثانوي);
+      font-size:11px;
       font-weight:900;
-      margin-bottom:6px;
+      text-align:center;
+      letter-spacing:.2px;
     }
-    .box strong{
-      display:block;
-      font-size:14px;
-      color:var(--c2);
-      font-weight:900;
-      line-height:1.85;
-      white-space:pre-line;
-    }
-
-    .hist{
-      margin-top:10px;
-      display:flex; gap:6px; align-items:flex-end;
-      height:44px;
-    }
-    .hist i{
-      display:block;
-      width:100%;
-      max-width:18px;
-      flex:1;
-      border-radius:999px;
-      background:linear-gradient(180deg,var(--c3), var(--c1));
-      opacity:.85;
-      transform-origin:bottom;
-      transition:transform .18s ease;
-    }
-    .box:hover .hist i{transform:scaleY(1.03)}
-
-    /* =========================
-       PRESENTATION MODE
-       ========================= */
-    body.presentation .gd-wrap{max-width:1400px}
-    body.presentation .gd-controls{display:none}
-    body.presentation .gd-title h1{font-size:20px}
-    body.presentation .grid{grid-template-columns:repeat(auto-fit, minmax(320px, 1fr))}
-    body.presentation .card .value{font-size:38px}
-
   </style>
 </head>
 
 <body>
-  <div class="gd-wrap">
 
-    <div class="gd-header">
-      <div class="gd-title">
+  <div class="شريط-جانبي">
+    <div class="زر-عائم" id="زر_النمط">نمط داكن</div>
+    <div class="زر-عائم" id="زر_العرض">وضع العرض</div>
+  </div>
+
+  <div class="حاوية">
+
+    <div class="هيدر">
+      <div class="عنوان">
         <h1>لوحة معلومات الحوكمة</h1>
-        <div class="gd-sub" id="subtitle">بيانات تشغيلية تقديرية • تعكس حالة الحوكمة عبر مجالات متعددة (ثابتة نسبيًا)</div>
+        <div class="وصف">
+          منصة قياس حوكمي تُحوّل المؤشرات إلى إشارات تنفيذية واضحة، وتدعم اتخاذ القرار عبر متابعة الفجوات والأولويات وتحسين الانضباط المؤسسي بصورة عملية ومنظمة.
+        </div>
       </div>
 
-      <div class="gd-controls">
+      <div class="تحكم">
 
-        <div class="pill" aria-label="Levels">
-          <button type="button" class="active" data-level="exec">تنفيذي</button>
-          <button type="button" data-level="sup">إشرافي</button>
-          <button type="button" data-level="ops">تشغيلي</button>
+        <div class="حبة" aria-label="المستويات">
+          <button type="button" class="نشط" data-مستوى="تنفيذي">تنفيذي</button>
+          <button type="button" data-مستوى="إشرافي">إشرافي</button>
+          <button type="button" data-مستوى="تشغيلي">تشغيلي</button>
         </div>
 
-        <div class="pill" aria-label="Periods">
-          <button type="button" class="active" data-period="daily">يومي</button>
-          <button type="button" data-period="weekly">أسبوعي</button>
-          <button type="button" data-period="monthly">شهري</button>
-          <button type="button" data-period="quarterly">ربعي</button>
+        <div class="حبة" aria-label="الفترات">
+          <button type="button" class="نشط" data-فترة="يومي">يومي</button>
+          <button type="button" data-فترة="أسبوعي">أسبوعي</button>
+          <button type="button" data-فترة="شهري">شهري</button>
+          <button type="button" data-فترة="ربعي">ربعي</button>
         </div>
 
-        <div class="gd-dates" aria-label="Date Range">
-          <label>من</label><input type="date" id="from">
-          <label>إلى</label><input type="date" id="to">
+        <div class="نطاق-تواريخ" aria-label="نطاق التاريخ">
+          <label>من</label><input type="date" id="من">
+          <label>إلى</label><input type="date" id="إلى">
         </div>
 
-        <div class="gd-select" aria-label="Filters">
-          <select id="filterDomain" title="المجال">
-            <option value="all">كل المجالات</option>
-          </select>
-          <select id="filterOwner" title="المالك">
-            <option value="all">كل الملاك</option>
-          </select>
-          <select id="filterStatus" title="الحالة">
-            <option value="all">كل الحالات</option>
-            <option value="good">مستقر</option>
-            <option value="warn">مراقبة</option>
-            <option value="bad">تدخل</option>
-          </select>
-        </div>
+        <div class="كتلة-فلاتر">
 
-        <div class="gd-select" aria-label="Sort">
-          <select id="sortBy" title="الفرز">
-            <option value="risk">الأكثر خطورة أولاً</option>
-            <option value="gap">الأعلى فجوة</option>
-            <option value="name">الاسم (أ-ي)</option>
-          </select>
-        </div>
+          <!-- فلاتر تنفيذي -->
+          <div class="مجموعة-فلاتر تظهر" id="فلاتر_تنفيذي">
+            <select id="تنفيذي_مجال" title="المجال"></select>
+            <select id="تنفيذي_مالك" title="المالك"></select>
+            <select id="تنفيذي_حالة" title="الحالة">
+              <option value="الكل">كل الحالات</option>
+              <option value="مستقر">مستقر</option>
+              <option value="مراقبة">مراقبة</option>
+              <option value="تدخل">تدخل</option>
+            </select>
+          </div>
 
-        <div class="gd-actions">
-          <button type="button" class="ghost" id="btnPresent">وضع عرض</button>
-          <button type="button" class="ghost" id="btnReset">إعادة ضبط</button>
+          <!-- فلاتر إشرافي -->
+          <div class="مجموعة-فلاتر" id="فلاتر_إشرافي">
+            <select id="إشرافي_مجال" title="المجال"></select>
+            <select id="إشرافي_برنامج" title="البرنامج"></select>
+            <select id="إشرافي_مالك" title="المالك"></select>
+            <select id="إشرافي_حالة" title="الحالة">
+              <option value="الكل">كل الحالات</option>
+              <option value="مستقر">مستقر</option>
+              <option value="مراقبة">مراقبة</option>
+              <option value="تدخل">تدخل</option>
+            </select>
+          </div>
+
+          <!-- فلاتر تشغيلي -->
+          <div class="مجموعة-فلاتر" id="فلاتر_تشغيلي">
+            <select id="تشغيلي_مجال" title="المجال"></select>
+            <select id="تشغيلي_قناة" title="القناة"></select>
+            <select id="تشغيلي_فريق" title="الفريق"></select>
+            <select id="تشغيلي_حالة" title="الحالة">
+              <option value="الكل">كل الحالات</option>
+              <option value="مستقر">مستقر</option>
+              <option value="مراقبة">مراقبة</option>
+              <option value="تدخل">تدخل</option>
+            </select>
+          </div>
+
+          <div class="مجموعة-فلاتر تظهر" style="gap:8px">
+            <select id="فرز" title="الفرز">
+              <option value="الأكثر_خطورة">الأكثر خطورة أولاً</option>
+              <option value="الأعلى_فجوة">الأعلى فجوة</option>
+              <option value="الاسم">حسب الاسم</option>
+            </select>
+            <button type="button" class="زر-إطار" id="زر_إعادة">إعادة ضبط</button>
+          </div>
+
         </div>
 
       </div>
     </div>
 
-    <!-- EXEC SUMMARY -->
-    <div class="gd-summary" id="summary">
-      <div class="sum-top">
-        <div class="sum-main">
-          <div class="label">مؤشر صحة الحوكمة العام</div>
-          <div class="value" id="overallVal">0%</div>
+    <div class="ملخص" id="ملخص">
+      <div class="ملخص-أعلى">
+        <div>
+          <div class="ملخص-وسم">مؤشر صحة الحوكمة العام</div>
+          <div class="ملخص-قيمة" id="قيمة_عام">—</div>
         </div>
-
-        <div class="chip">
-          <span class="dot" id="overallDot"></span>
-          <span id="overallLabel">—</span>
+        <div class="شارة">
+          <span class="نقطة" id="نقطة_عام"></span>
+          <span id="وسم_عام">—</span>
         </div>
       </div>
-
-      <div class="bar"><span id="overallBar" style="width:0%"></span></div>
-
-      <div class="sum-kpis" id="sumKpis"></div>
+      <div class="شريط"><span id="شريط_عام" style="width:0%"></span></div>
+      <div class="ملخص-مربعات" id="مربعات_ملخص"></div>
     </div>
 
-    <!-- GRID -->
-    <div class="grid" id="grid"></div>
+    <div class="شبكة" id="شبكة"></div>
 
-    <!-- DETAILS -->
-    <div class="details" id="details">
+    <div class="تفاصيل" id="تفاصيل">
       <h3>اختر مؤشرًا</h3>
-      <p class="hint">اضغط على أي بطاقة لعرض التفاصيل والأدلة وخطة الإجراء. البيانات ثابتة نسبيًا لتعكس القياس التشغيلي الواقعي.</p>
+      <p class="ملاحظة">اضغط على أي بطاقة لعرض تفاصيل عملية واضحة، مع إجراء مختصر مناسب لحالة المؤشر.</p>
     </div>
 
   </div>
+
+  <div class="تذييل">تطوير : يوسف بن طواله - 2026</div>
 
 <script>
 (function(){
@@ -628,630 +615,523 @@
     const $ = (s, root=document) => root.querySelector(s);
     const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
 
-    const grid = $("#grid");
-    const details = $("#details");
-    const subtitle = $("#subtitle");
+    const شبكة = $("#شبكة");
+    const تفاصيل = $("#تفاصيل");
 
-    const overallVal = $("#overallVal");
-    const overallBar = $("#overallBar");
-    const overallLabel = $("#overallLabel");
-    const overallDot = $("#overallDot");
-    const sumKpis = $("#sumKpis");
+    const قيمة_عام = $("#قيمة_عام");
+    const شريط_عام = $("#شريط_عام");
+    const وسم_عام  = $("#وسم_عام");
+    const نقطة_عام = $("#نقطة_عام");
+    const مربعات_ملخص = $("#مربعات_ملخص");
 
-    const fromInput = $("#from");
-    const toInput = $("#to");
+    const من = $("#من");
+    const إلى = $("#إلى");
 
-    const levelBtns = $$("[data-level]");
-    const periodBtns = $$("[data-period]");
+    const أزرار_المستوى = $$("[data-مستوى]");
+    const أزرار_الفترة  = $$("[data-فترة]");
 
-    const filterDomain = $("#filterDomain");
-    const filterOwner  = $("#filterOwner");
-    const filterStatus = $("#filterStatus");
-    const sortBy = $("#sortBy");
+    const زر_النمط = $("#زر_النمط");
+    const زر_العرض = $("#زر_العرض");
+    const زر_إعادة = $("#زر_إعادة");
+    const فرز = $("#فرز");
 
-    const btnPresent = $("#btnPresent");
-    const btnReset = $("#btnReset");
+    const فلاتر_تنفيذي = $("#فلاتر_تنفيذي");
+    const فلاتر_إشرافي = $("#فلاتر_إشرافي");
+    const فلاتر_تشغيلي = $("#فلاتر_تشغيلي");
 
-    let level = "exec";
-    let period = "daily";
-    let activeIdx = 0;
+    const تنفيذي_مجال = $("#تنفيذي_مجال");
+    const تنفيذي_مالك = $("#تنفيذي_مالك");
+    const تنفيذي_حالة = $("#تنفيذي_حالة");
 
-    /* =========================
-       KPI CATALOG (General Governance)
-       - Domains: Strategy, Risk, Compliance, Data, Security, Finance, Delivery, CX, Ops, People
-       - Stable base values closer to reality (not all 90+)
-       ========================= */
-    const DATA = [
-      /* EXEC (governance/strategy) */
-      { id:"gov_decision_log", level:"exec", domain:"الحوكمة والقرار", name:"اكتمال سجل القرارات والتصعيد", unit:"%", target:100, better:"high",
-        def:"توثيق قرارات اللجان والتصعيدات مع المبررات والتواريخ وملاك الإجراء.",
-        owner:"لجنة التوجيه", source:"Minutes/Decision Log",
-        evidence:["سجل قرارات محدث","محاضر لجنة","قائمة إجراءات مرتبطة بالقرار"],
-        risk:"قرارات غير موثقة تؤدي لتضارب تنفيذ وتأخر معالجة الانحرافات.",
-        formula:"(قرارات موثقة ÷ القرارات الفعلية) × 100",
-        base:92, volatility:"low", last:"قبل 2 يوم", trend:"up"
-      },
-      { id:"gov_policy_coverage", level:"exec", domain:"السياسات والامتثال", name:"تغطية السياسات الأساسية", unit:"%", target:95, better:"high",
-        def:"نسبة السياسات الحاكمة المعتمدة والمطبقة (حوكمة، أمن، خصوصية، مشتريات، تعاقدات).",
-        owner:"الامتثال", source:"Policy Register",
-        evidence:["Policy register","اعتمادات","خطة نشر/تطبيق"],
-        risk:"قصور السياسات يرفع مخاطر الالتزام ويضعف المساءلة.",
-        formula:"(سياسات معتمدة ومطبقة ÷ سياسات مطلوبة) × 100",
-        base:88, volatility:"med", last:"قبل 5 أيام", trend:"flat"
-      },
-      { id:"gov_okrs_ach", level:"exec", domain:"الاستراتيجية والأداء", name:"تحقق أهداف الأداء الاستراتيجي", unit:"%", target:85, better:"high",
-        def:"نسبة تحقق أهداف الأداء المرتبطة بالحوكمة وفق OKRs/KPIs المعتمدة.",
-        owner:"PMO", source:"Performance Dashboard",
-        evidence:["لوحة OKRs","تحديث شهري","تحليل فجوات"],
-        risk:"تحقق منخفض يعني خلل تصميم/تنفيذ أو ضعف متابعة.",
-        formula:"(الأهداف المتحققة ÷ إجمالي الأهداف) × 100",
-        base:82, volatility:"med", last:"قبل أسبوع", trend:"down"
-      },
-      { id:"fin_budget_control", level:"exec", domain:"المالية", name:"الالتزام بالميزانية ضمن الهامش", unit:"%", target:95, better:"high",
-        def:"الإنفاق ضمن المعتمد مع ضبط التغييرات (±5%) وإظهار الانحرافات بوضوح.",
-        owner:"المالية", source:"Financial Reports",
-        evidence:["تقرير صرف","سجل تغييرات","تسويات"],
-        risk:"تجاوز مالي يهدد الاستدامة ويؤخر الأولويات.",
-        formula:"(الإنفاق ضمن الهامش ÷ المعتمد) × 100",
-        base:93, volatility:"low", last:"قبل 3 أيام", trend:"up"
-      },
-      { id:"risk_open_count", level:"exec", domain:"المخاطر", name:"عدد المخاطر الحرجة المفتوحة", unit:"", target:6, better:"low",
-        def:"عدد المخاطر الحرجة المفتوحة (الأفضل أن يكون منخفضًا) مع خطط معالجة وملاك واضحين.",
-        owner:"GRC", source:"Risk Register",
-        evidence:["Risk register","خطط معالجة","تحديث حالة المخاطر"],
-        risk:"مخاطر حرجة مفتوحة تعني احتمالية تعطّل أو خسائر تشغيلية.",
-        formula:"عدد المخاطر الحرجة المفتوحة",
-        base:7, volatility:"high", last:"قبل 4 أيام", trend:"down"
-      },
+    const إشرافي_مجال = $("#إشرافي_مجال");
+    const إشرافي_برنامج = $("#إشرافي_برنامج");
+    const إشرافي_مالك = $("#إشرافي_مالك");
+    const إشرافي_حالة = $("#إشرافي_حالة");
 
-      /* SUP (delivery/compliance/data) */
-      { id:"del_schedule", level:"sup", domain:"التسليم", name:"الالتزام بالجدول الزمني للخطط", unit:"%", target:90, better:"high",
-        def:"الالتزام بتنفيذ الخطة ضمن الجدول المعتمد مع إدارة الانحرافات.",
-        owner:"PMO", source:"Schedule/Plans",
-        evidence:["Baseline","تحديث أسبوعي","تحليل انحرافات"],
-        risk:"تأخر متكرر يرفع التكلفة ويزيد المخاطر.",
-        formula:"(منجز وفق الخطة ÷ مخطط) × 100",
-        base:87, volatility:"med", last:"قبل يوم", trend:"flat"
-      },
-      { id:"cmp_audit_findings", level:"sup", domain:"السياسات والامتثال", name:"ملاحظات التدقيق الجوهرية", unit:"", target:3, better:"low",
-        def:"عدد الملاحظات الجوهرية غير المغلقة في نتائج التدقيق.",
-        owner:"الامتثال", source:"Audit Reports",
-        evidence:["تقرير تدقيق","خطة إغلاق","إثباتات إغلاق"],
-        risk:"ملاحظات جوهرية قد تتحول لمخالفات أو تعطّل إجراءات.",
-        formula:"عدد الملاحظات الجوهرية المفتوحة",
-        base:4, volatility:"high", last:"قبل 9 أيام", trend:"up"
-      },
-      { id:"data_quality", level:"sup", domain:"البيانات", name:"نضج جودة البيانات (DQ)", unit:"%", target:90, better:"high",
-        def:"نضج جودة البيانات عبر الاكتمال/الدقة/التحديث/الاتساق وفق عينات دورية.",
-        owner:"إدارة البيانات", source:"DQ Checks",
-        evidence:["نتائج فحص DQ","عينات","سجل معالجات"],
-        risk:"جودة بيانات ضعيفة تعطي قرارات مضللة.",
-        formula:"(نتيجة الجودة ÷ المستهدف) × 100",
-        base:84, volatility:"med", last:"قبل أسبوعين", trend:"up"
-      },
-      { id:"sec_access_reviews", level:"sup", domain:"الأمن السيبراني", name:"نسبة مراجعات الصلاحيات المنجزة", unit:"%", target:100, better:"high",
-        def:"إتمام مراجعات الصلاحيات الدورية (Access Review) وإغلاق الاستثناءات.",
-        owner:"الأمن السيبراني", source:"IAM Reviews",
-        evidence:["قوائم مراجعة","نتائج","إقفالات"],
-        risk:"صلاحيات غير مراجعة تعني خطر وصول غير مصرح.",
-        formula:"(مراجعات منجزة ÷ المخطط) × 100",
-        base:91, volatility:"low", last:"قبل 6 أيام", trend:"flat"
-      },
-      { id:"cx_stake", level:"sup", domain:"أصحاب المصلحة", name:"رضا أصحاب المصلحة", unit:"%", target:85, better:"high",
-        def:"رضا أصحاب المصلحة عن الحوكمة والشفافية وسرعة اتخاذ القرار والتواصل.",
-        owner:"تجربة العميل", source:"Surveys/Interviews",
-        evidence:["CSAT","مقابلات","تحليل شكاوى"],
-        risk:"رضا منخفض يرفع مقاومة التغيير.",
-        formula:"(نقاط الرضا ÷ أعلى نقاط) × 100",
-        base:83, volatility:"med", last:"قبل 8 أيام", trend:"down"
-      },
+    const تشغيلي_مجال = $("#تشغيلي_مجال");
+    const تشغيلي_قناة = $("#تشغيلي_قناة");
+    const تشغيلي_فريق = $("#تشغيلي_فريق");
+    const تشغيلي_حالة = $("#تشغيلي_حالة");
 
-      /* OPS (operations/controls) */
-      { id:"ops_sla", level:"ops", domain:"التشغيل", name:"الالتزام بـ SLA للتعاملات", unit:"%", target:90, better:"high",
-        def:"نسبة الالتزام بزمن الخدمة/المعالجة ضمن SLA المعتمد.",
-        owner:"التشغيل", source:"Ops Logs",
-        evidence:["سجلات زمن","تقارير يومية","تحليل اختناق"],
-        risk:"انخفاض SLA يسبب تكدس وتأثير على جودة الخدمة.",
-        formula:"(طلبات ضمن SLA ÷ إجمالي الطلبات) × 100",
-        base:86, volatility:"med", last:"قبل يوم", trend:"up"
-      },
-      { id:"ops_incidents", level:"ops", domain:"الأمن السيبراني", name:"حوادث أمنية عالية الشدة", unit:"", target:1, better:"low",
-        def:"عدد الحوادث الأمنية ذات الشدة العالية خلال الفترة.",
-        owner:"الأمن السيبراني", source:"Incident Log",
-        evidence:["سجل حوادث","RCA","منع التكرار"],
-        risk:"ارتفاع الحوادث يهدد الثقة والالتزام.",
-        formula:"عدد الحوادث عالية الشدة",
-        base:2, volatility:"high", last:"قبل 12 يوم", trend:"flat"
-      },
-      { id:"ops_change_success", level:"ops", domain:"التغيير والإصدار", name:"نجاح التغييرات بدون Rollback", unit:"%", target:95, better:"high",
-        def:"نسبة التغييرات المنفذة بدون تراجع/فشل بعد النشر.",
-        owner:"التقنية", source:"Change Mgmt",
-        evidence:["Change log","موافقات CAB","نتائج نشر"],
-        risk:"فشل تغييرات يزيد التعطل والتكلفة.",
-        formula:"(تغييرات ناجحة ÷ إجمالي تغييرات) × 100",
-        base:90, volatility:"med", last:"قبل 3 أيام", trend:"up"
-      },
-      { id:"ops_training", level:"ops", domain:"الموارد والقدرات", name:"جاهزية التدريب وتغطية المهارات", unit:"%", target:90, better:"high",
-        def:"تغطية التدريب للمهارات الحرجة وتحديث المواد وفق العمليات.",
-        owner:"الموارد البشرية", source:"Training Records",
-        evidence:["سجل تدريب","حضور","تقييم بعد التدريب"],
-        risk:"ضعف التدريب يسبب أخطاء تشغيلية ويطيل زمن الخدمة.",
-        formula:"(تغطية التدريب ÷ المطلوب) × 100",
-        base:78, volatility:"med", last:"قبل 15 يوم", trend:"up"
-      }
+    let المستوى = "تنفيذي";
+    let الفترة  = "يومي";
+    let المؤشر_النشط = 0;
+
+    /* بيانات واقعية ومتفاوتة (واجهة عربية بالكامل) */
+    const مؤشرات = [
+      /* تنفيذي */
+      {معرف:"ت١", مستوى:"تنفيذي", مجال:"الحوكمة والقرار", اسم:"اكتمال سجل القرارات والتصعيد", وحدة:"٪", مستهدف:100, الأفضل:"أعلى",
+       تعريف:"نسبة توثيق القرارات والتصعيدات مع المبررات والتواريخ والمالك وخطة التنفيذ.",
+       مالك:"لجنة التوجيه", مصدر:"سجل القرارات", تحديث:"قبل يومين", اتجاه:"تحسن", أساس:92, تذبذب:"منخفض"},
+      {معرف:"ت٢", مستوى:"تنفيذي", مجال:"السياسات والامتثال", اسم:"تغطية السياسات الأساسية المعتمدة", وحدة:"٪", مستهدف:95, الأفضل:"أعلى",
+       تعريف:"نسبة السياسات الأساسية المعتمدة والمفعلة ضمن الحوكمة والأمن والخصوصية والتعاقدات.",
+       مالك:"الامتثال", مصدر:"سجل السياسات", تحديث:"قبل 5 أيام", اتجاه:"ثبات", أساس:88, تذبذب:"متوسط"},
+      {معرف:"ت٣", مستوى:"تنفيذي", مجال:"الاستراتيجية والأداء", اسم:"تحقق الأهداف الاستراتيجية", وحدة:"٪", مستهدف:85, الأفضل:"أعلى",
+       تعريف:"قياس تحقق الأهداف الاستراتيجية عبر مؤشرات أداء معتمدة وربطها بنتائج قابلة للقياس.",
+       مالك:"مكتب إدارة المشاريع", مصدر:"لوحة الأداء", تحديث:"قبل أسبوع", اتجاه:"تراجع", أساس:82, تذبذب:"متوسط"},
+      {معرف:"ت٤", مستوى:"تنفيذي", مجال:"المالية", اسم:"الالتزام بالميزانية ضمن الهامش", وحدة:"٪", مستهدف:95, الأفضل:"أعلى",
+       تعريف:"مدى الالتزام بالميزانية المعتمدة مع إدارة الانحرافات وسجل تغييرات مالي مضبوط.",
+       مالك:"المالية", مصدر:"تقارير الصرف", تحديث:"قبل 3 أيام", اتجاه:"تحسن", أساس:93, تذبذب:"منخفض"},
+      {معرف:"ت٥", مستوى:"تنفيذي", مجال:"المخاطر", اسم:"المخاطر الحرجة المفتوحة", وحدة:"عدد", مستهدف:6, الأفضل:"أقل",
+       تعريف:"عدد المخاطر الحرجة المفتوحة مع مالك وخطة معالجة وتاريخ إقفال مستهدف.",
+       مالك:"إدارة المخاطر", مصدر:"سجل المخاطر", تحديث:"قبل 4 أيام", اتجاه:"تحسن", أساس:7, تذبذب:"مرتفع"},
+      {معرف:"ت٦", مستوى:"تنفيذي", مجال:"الحوكمة والقرار", اسم:"انضباط التصعيد ضمن الإطار الزمني", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نسبة التصعيدات التي تمت ضمن الإطار الزمني المعتمد وبمسار قرار واضح.",
+       مالك:"لجنة التوجيه", مصدر:"سجل التصعيد", تحديث:"قبل 6 أيام", اتجاه:"ثبات", أساس:86, تذبذب:"متوسط"},
+
+      /* إشرافي */
+      {معرف:"إ١", مستوى:"إشرافي", مجال:"التسليم", برنامج:"تحسين الضبط", اسم:"الالتزام بالخطة الزمنية", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نسبة الإنجاز وفق الخطة الأساسية مع تتبع الانحرافات وتصحيحها مبكرًا.",
+       مالك:"مكتب إدارة المشاريع", مصدر:"تقارير الجدولة", تحديث:"قبل يوم", اتجاه:"ثبات", أساس:87, تذبذب:"متوسط"},
+      {معرف:"إ٢", مستوى:"إشرافي", مجال:"السياسات والامتثال", برنامج:"حوكمة الامتثال", اسم:"ملاحظات التدقيق الجوهرية المفتوحة", وحدة:"عدد", مستهدف:3, الأفضل:"أقل",
+       تعريف:"عدد الملاحظات الجوهرية غير المغلقة ضمن نتائج التدقيق والتقييمات.",
+       مالك:"الامتثال", مصدر:"تقارير التدقيق", تحديث:"قبل 9 أيام", اتجاه:"تراجع", أساس:4, تذبذب:"مرتفع"},
+      {معرف:"إ٣", مستوى:"إشرافي", مجال:"البيانات", برنامج:"جودة البيانات", اسم:"جودة البيانات (الدقة والاكتمال)", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نتيجة جودة البيانات عبر الدقة والاكتمال والاتساق والتحديث وفق عينات تحقق.",
+       مالك:"إدارة البيانات", مصدر:"فحوصات الجودة", تحديث:"قبل أسبوعين", اتجاه:"تحسن", أساس:84, تذبذب:"متوسط"},
+      {معرف:"إ٤", مستوى:"إشرافي", مجال:"الأمن السيبراني", برنامج:"ضبط الوصول", اسم:"إتمام مراجعات الصلاحيات الدورية", وحدة:"٪", مستهدف:100, الأفضل:"أعلى",
+       تعريف:"نسبة مراجعات الصلاحيات المنجزة وإغلاق الاستثناءات خلال الفترة.",
+       مالك:"الأمن السيبراني", مصدر:"سجل الصلاحيات", تحديث:"قبل 6 أيام", اتجاه:"ثبات", أساس:91, تذبذب:"منخفض"},
+      {معرف:"إ٥", مستوى:"إشرافي", مجال:"التحسين", برنامج:"تصحيح الانحرافات", اسم:"سرعة إقفال الإجراءات التصحيحية", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نسبة الإجراءات التصحيحية التي أُقفلت ضمن المدة المعتمدة مع دليل إقفال.",
+       مالك:"الجودة", مصدر:"سجل الإجراءات", تحديث:"قبل 4 أيام", اتجاه:"تحسن", أساس:86, تذبذب:"متوسط"},
+
+      /* تشغيلي */
+      {معرف:"ش١", مستوى:"تشغيلي", مجال:"التشغيل", قناة:"مركز الخدمات", فريق:"الدعم", اسم:"الالتزام بزمن الخدمة المعتمد", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نسبة الطلبات المنجزة ضمن الزمن المعتمد وفق فئة الخدمة.",
+       مالك:"التشغيل", مصدر:"سجلات التشغيل", تحديث:"قبل يوم", اتجاه:"تحسن", أساس:86, تذبذب:"متوسط"},
+      {معرف:"ش٢", مستوى:"تشغيلي", مجال:"الأمن السيبراني", قناة:"الرصد", فريق:"الحماية", اسم:"الحوادث عالية الشدة خلال الفترة", وحدة:"عدد", مستهدف:1, الأفضل:"أقل",
+       تعريف:"عدد الحوادث عالية الشدة مع توثيق وتحليل وإقفال ومنع تكرار.",
+       مالك:"الأمن السيبراني", مصدر:"سجل الحوادث", تحديث:"قبل 12 يومًا", اتجاه:"ثبات", أساس:2, تذبذب:"مرتفع"},
+      {معرف:"ش٣", مستوى:"تشغيلي", مجال:"التغيير والإصدار", قناة:"الإصدارات", فريق:"المنصات", اسم:"نجاح التغييرات دون تراجع", وحدة:"٪", مستهدف:95, الأفضل:"أعلى",
+       تعريف:"نسبة التغييرات المنفذة بنجاح دون تراجع بعد الإطلاق.",
+       مالك:"التقنية", مصدر:"سجل التغييرات", تحديث:"قبل 3 أيام", اتجاه:"تحسن", أساس:90, تذبذب:"متوسط"},
+      {معرف:"ش٤", مستوى:"تشغيلي", مجال:"الموارد والقدرات", قناة:"التدريب", فريق:"التطوير", اسم:"جاهزية التدريب وتغطية المهارات", وحدة:"٪", مستهدف:90, الأفضل:"أعلى",
+       تعريف:"نسبة تغطية التدريب للمهارات الحرجة وتحديث مواد التشغيل.",
+       مالك:"الموارد البشرية", مصدر:"سجل التدريب", تحديث:"قبل 15 يومًا", اتجاه:"تحسن", أساس:78, تذبذب:"متوسط"},
+      {معرف:"ش٥", مستوى:"تشغيلي", مجال:"التشغيل", قناة:"نظام التذاكر", فريق:"التشغيل", اسم:"دقة تصنيف التذاكر من أول مرة", وحدة:"٪", مستهدف:92, الأفضل:"أعلى",
+       تعريف:"نسبة التذاكر المصنفة بشكل صحيح من أول مرة دون إعادة توجيه.",
+       مالك:"التشغيل", مصدر:"تقارير التذاكر", تحديث:"قبل 6 أيام", اتجاه:"ثبات", أساس:88, تذبذب:"متوسط"},
+      {معرف:"ش٦", مستوى:"تشغيلي", مجال:"التشغيل", قناة:"مركز الخدمات", فريق:"الدعم", اسم:"متوسط زمن المعالجة", وحدة:"دقيقة", مستهدف:45, الأفضل:"أقل",
+       تعريف:"متوسط الزمن من تسجيل الطلب حتى الإغلاق وفق فئة الخدمة.",
+       مالك:"التشغيل", مصدر:"سجلات زمنية", تحديث:"قبل يومين", اتجاه:"تحسن", أساس:52, تذبذب:"متوسط"},
     ];
 
-    /* =========================
-       Stable deterministic values
-       - Not random every refresh
-       - Varies when you change period/level/date
-       ========================= */
-    function hashStr(s){
-      let h=2166136261;
-      for(let i=0;i<s.length;i++){
-        h^=s.charCodeAt(i);
-        h=Math.imul(h,16777619);
-      }
-      return (h>>>0);
-    }
-    function rand01(seed){
-      seed ^= seed << 13; seed >>>= 0;
-      seed ^= seed >> 17; seed >>>= 0;
-      seed ^= seed << 5;  seed >>>= 0;
-      return (seed >>> 0) / 4294967295;
-    }
-    function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
-    function daysBetween(a,b){
+    function حد(n,a,b){ return Math.max(a, Math.min(b, n)); }
+
+    function فرق_أيام(a,b){
       const da=new Date(a), db=new Date(b);
       const diff=(db-da)/(1000*60*60*24);
       if(!isFinite(diff)) return 0;
       return Math.abs(Math.round(diff));
     }
-    function periodAmp(p){
-      // subtle changes only
-      return p==="daily" ? 0.010 :
-             p==="weekly"? 0.016 :
-             p==="monthly"?0.022 : 0.028;
+
+    function تجزئة(نص){
+      let h=2166136261;
+      for(let i=0;i<نص.length;i++){
+        h^=نص.charCodeAt(i);
+        h=Math.imul(h,16777619);
+      }
+      return (h>>>0);
     }
-    function volAmp(v){
-      return v==="low" ? 0.55 : v==="med" ? 0.85 : 1.10;
+
+    function عشوائي_ثابت(seed){
+      seed ^= seed << 13; seed >>>= 0;
+      seed ^= seed >> 17; seed >>>= 0;
+      seed ^= seed << 5;  seed >>>= 0;
+      return (seed >>> 0) / 4294967295;
     }
 
-    function computeValue(ind){
-      const from = fromInput?.value || "";
-      const to   = toInput?.value || "";
-      const d = (from && to) ? daysBetween(from,to) : 0;
-      const dateInfluence = clamp(d/160, 0, 1) * 0.020;
+    function سعة_الفترة(ف){
+      return ف==="يومي" ? 0.010 :
+             ف==="أسبوعي" ? 0.016 :
+             ف==="شهري" ? 0.022 : 0.028;
+    }
 
-      const seed = hashStr(ind.id+"|"+level+"|"+period+"|"+from+"|"+to);
-      const r = rand01(seed);
-      const n = (r - 0.5) * 2; // -1..1
+    function سعة_التذبذب(ت){
+      return ت==="منخفض" ? 0.55 : ت==="متوسط" ? 0.85 : 1.10;
+    }
 
-      const amp = (periodAmp(period) + dateInfluence) * volAmp(ind.volatility);
+    function قيمة_محسوبة(م){
+      const تاريخ_من = من?.value || "";
+      const تاريخ_إلى = إلى?.value || "";
+      const d = (تاريخ_من && تاريخ_إلى) ? فرق_أيام(تاريخ_من,تاريخ_إلى) : 0;
+      const تأثير_تاريخ = حد(d/160, 0, 1) * 0.020;
 
-      let val = ind.base * (1 + n * amp);
+      const seed = تجزئة(م.معرف+"|"+المستوى+"|"+الفترة+"|"+تاريخ_من+"|"+تاريخ_إلى);
+      const r = عشوائي_ثابت(seed);
+      const n = (r - 0.5) * 2;
 
-      if(ind.unit === "%"){
-        val = Math.round(clamp(val, 0, 100));
-      } else if(ind.unit === ""){
-        // counts: keep realistic boundaries
+      const amp = (سعة_الفترة(الفترة) + تأثير_تاريخ) * سعة_التذبذب(م.تذبذب);
+      let val = م.أساس * (1 + n * amp);
+
+      if(م.وحدة === "٪"){
+        val = Math.round(حد(val, 0, 100));
+      }else if(م.وحدة === "عدد"){
         val = Math.round(Math.max(0, val));
-        if(ind.target <= 2) val = clamp(val, 0, 6);
-        if(ind.target <= 6) val = clamp(val, 0, 15);
-        if(ind.id==="ops_incidents") val = clamp(val, 0, 6);
+        val = حد(val, 0, 20);
+      }else if(م.وحدة === "دقيقة"){
+        val = Math.round(Math.max(0, val));
+        val = حد(val, 5, 240);
       }
       return val;
     }
 
-    function score(ind, value){
-      if(ind.better === "low"){
-        const ratio = ind.target / Math.max(value, 0.0001);
-        return clamp(ratio*100, 0, 100);
+    function نسبة_تحقق(م, القيمة){
+      if(م.الأفضل === "أقل"){
+        const ratio = م.مستهدف / Math.max(القيمة, 0.0001);
+        return حد(ratio*100, 0, 100);
       }
-      const ratio = value / Math.max(ind.target, 0.0001);
-      return clamp(ratio*100, 0, 100);
+      const ratio = القيمة / Math.max(م.مستهدف, 0.0001);
+      return حد(ratio*100, 0, 100);
     }
-    function statusOf(ind, value){
-      const s = score(ind, value);
-      if(s >= 100) return {label:"مستقر", cls:"good"};
-      if(s >= 90)  return {label:"مراقبة", cls:"warn"};
-      return {label:"تدخل", cls:"bad"};
+
+    function حالة(م, القيمة){
+      const s = نسبة_تحقق(م, القيمة);
+      if(s >= 100) return "مستقر";
+      if(s >= 90)  return "مراقبة";
+      return "تدخل";
     }
-    function pctBar(ind, value){
-      if(ind.better === "low"){
-        return clamp((ind.target / Math.max(value,0.0001))*100, 0, 100);
+
+    function فجوة(م, القيمة){
+      if(م.الأفضل === "أقل") return Math.max(0, القيمة - م.مستهدف);
+      return Math.max(0, م.مستهدف - القيمة);
+    }
+
+    function إجراء_مختصر(الحالة){
+      if(الحالة==="مستقر") return "استمرار المتابعة وتثبيت الضبط.";
+      if(الحالة==="مراقبة") return "تحديد سبب الفجوة وتنفيذ تصحيح سريع.";
+      return "تدخل فوري وتكليف مالك إقفال خلال مدة محددة.";
+    }
+
+    function تحديث_إظهار_الفلاتر(){
+      فلاتر_تنفيذي.classList.remove("تظهر");
+      فلاتر_إشرافي.classList.remove("تظهر");
+      فلاتر_تشغيلي.classList.remove("تظهر");
+
+      if(المستوى==="تنفيذي") فلاتر_تنفيذي.classList.add("تظهر");
+      if(المستوى==="إشرافي") فلاتر_إشرافي.classList.add("تظهر");
+      if(المستوى==="تشغيلي") فلاتر_تشغيلي.classList.add("تظهر");
+    }
+
+    function تعبئة_خيارات(select, قائمة, عنوان){
+      const uniq = Array.from(new Set(قائمة)).sort((a,b)=>String(a).localeCompare(String(b),'ar'));
+      select.innerHTML = `<option value="الكل">كل ${عنوان}</option>` + uniq.map(x=>`<option value="${x}">${x}</option>`).join("");
+      select.value = "الكل";
+    }
+
+    function تحديث_فلاتر_حسب_المستوى(){
+      const قائمة = مؤشرات.filter(x=>x.مستوى===المستوى);
+
+      if(المستوى==="تنفيذي"){
+        تعبئة_خيارات(تنفيذي_مجال, قائمة.map(x=>x.مجال), "المجالات");
+        تعبئة_خيارات(تنفيذي_مالك, قائمة.map(x=>x.مالك), "الملاك");
+        تنفيذي_حالة.value="الكل";
       }
-      return clamp((value / Math.max(ind.target,0.0001))*100, 0, 100);
-    }
-    function labelPeriod(){
-      return period==="daily"?"يومي":period==="weekly"?"أسبوعي":period==="monthly"?"شهري":"ربع سنوي";
-    }
-    function labelLevel(){
-      return level==="exec"?"تنفيذي":level==="sup"?"إشرافي":"تشغيلي";
-    }
-    function ownerShort(owner){
-      return owner.split("+")[0].trim();
-    }
 
-    function historyBars(ind){
-      const from = fromInput?.value || "";
-      const to   = toInput?.value || "";
-      const baseSeed = hashStr(ind.id+"|hist|"+level+"|"+period+"|"+from+"|"+to);
-      const bars=[];
-      for(let i=0;i<6;i++){
-        const r = rand01(baseSeed + i*97);
-        const h = 34 + Math.round(r*62);
-        bars.push(h);
+      if(المستوى==="إشرافي"){
+        تعبئة_خيارات(إشرافي_مجال, قائمة.map(x=>x.مجال), "المجالات");
+        تعبئة_خيارات(إشرافي_برنامج, قائمة.map(x=>x.برنامج||"غير مصنف"), "البرامج");
+        تعبئة_خيارات(إشرافي_مالك, قائمة.map(x=>x.مالك), "الملاك");
+        إشرافي_حالة.value="الكل";
       }
-      return bars;
+
+      if(المستوى==="تشغيلي"){
+        تعبئة_خيارات(تشغيلي_مجال, قائمة.map(x=>x.مجال), "المجالات");
+        تعبئة_خيارات(تشغيلي_قناة, قائمة.map(x=>x.قناة||"غير مصنف"), "القنوات");
+        تعبئة_خيارات(تشغيلي_فريق, قائمة.map(x=>x.فريق||"غير مصنف"), "الفرق");
+        تشغيلي_حالة.value="الكل";
+      }
+
+      فرز.value="الأكثر_خطورة";
+      تحديث_إظهار_الفلاتر();
     }
 
-    /* =========================
-       Filters + sorting
-       ========================= */
-    function getAllForLevel(){
-      return DATA.filter(x => x.level === level);
-    }
-
-    function initFilterOptions(){
-      // Domains
-      const domains = Array.from(new Set(DATA.map(x=>x.domain))).sort((a,b)=>a.localeCompare(b,'ar'));
-      domains.forEach(d=>{
-        const opt=document.createElement("option");
-        opt.value=d; opt.textContent=d;
-        filterDomain.appendChild(opt);
-      });
-
-      // Owners
-      const owners = Array.from(new Set(DATA.map(x=>x.owner))).sort((a,b)=>a.localeCompare(b,'ar'));
-      owners.forEach(o=>{
-        const opt=document.createElement("option");
-        opt.value=o; opt.textContent=o;
-        filterOwner.appendChild(opt);
-      });
-    }
-
-    function applyFilters(list){
-      const d = filterDomain.value;
-      const o = filterOwner.value;
-      const s = filterStatus.value;
-
-      return list.filter(it=>{
-        if(d!=="all" && it.ind.domain!==d) return false;
-        if(o!=="all" && it.ind.owner!==o) return false;
-        if(s!=="all" && it.st.cls!==s) return false;
+    function تطبيق_فلاتر_المستوى(عناصر){
+      if(المستوى==="تنفيذي"){
+        const مج = تنفيذي_مجال.value, مال=تنفيذي_مالك.value, ح=تنفيذي_حالة.value;
+        return عناصر.filter(it=>{
+          if(مج!=="الكل" && it.م.مجال!==مج) return false;
+          if(مال!=="الكل" && it.م.مالك!==مال) return false;
+          if(ح!=="الكل" && it.حالة!==ح) return false;
+          return true;
+        });
+      }
+      if(المستوى==="إشرافي"){
+        const مج = إشرافي_مجال.value, بر=إشرافي_برنامج.value, مال=إشرافي_مالك.value, ح=إشرافي_حالة.value;
+        return عناصر.filter(it=>{
+          if(مج!=="الكل" && it.م.مجال!==مج) return false;
+          if(بر!=="الكل" && (it.م.برنامج||"غير مصنف")!==بر) return false;
+          if(مال!=="الكل" && it.م.مالك!==مال) return false;
+          if(ح!=="الكل" && it.حالة!==ح) return false;
+          return true;
+        });
+      }
+      const مج = تشغيلي_مجال.value, ق=تشغيلي_قناة.value, ف=تشغيلي_فريق.value, ح=تشغيلي_حالة.value;
+      return عناصر.filter(it=>{
+        if(مج!=="الكل" && it.م.مجال!==مج) return false;
+        if(ق!=="الكل" && (it.م.قناة||"غير مصنف")!==ق) return false;
+        if(ف!=="الكل" && (it.م.فريق||"غير مصنف")!==ف) return false;
+        if(ح!=="الكل" && it.حالة!==ح) return false;
         return true;
       });
     }
 
-    function sortList(list){
-      const mode = sortBy.value;
-      if(mode==="name"){
-        return list.sort((a,b)=>a.ind.name.localeCompare(b.ind.name,'ar'));
+    function ترتيب(قائمة){
+      if(فرز.value==="الاسم"){
+        return قائمة.sort((a,b)=>a.م.اسم.localeCompare(b.م.اسم,'ar'));
       }
-      if(mode==="gap"){
-        return list.sort((a,b)=>b.gapAbs - a.gapAbs);
+      if(فرز.value==="الأعلى_فجوة"){
+        return قائمة.sort((a,b)=>b.فجوة - a.فجوة);
       }
-      // risk (bad first, then warn, then good), tie by gap
-      const rank = {bad:0, warn:1, good:2};
-      return list.sort((a,b)=>{
-        const ra=rank[a.st.cls], rb=rank[b.st.cls];
+      const رتبة={"تدخل":0,"مراقبة":1,"مستقر":2};
+      return قائمة.sort((a,b)=>{
+        const ra=رتبة[a.حالة], rb=رتبة[b.حالة];
         if(ra!==rb) return ra-rb;
-        return b.gapAbs - a.gapAbs;
+        return b.فجوة - a.فجوة;
       });
     }
 
-    /* =========================
-       Executive summary KPIs (Top 4)
-       ========================= */
-    function buildSummary(list){
-      // compute overall governance health based on scores
-      if(!list.length){
-        overallVal.textContent = "0%";
-        overallBar.style.width = "0%";
-        overallLabel.textContent = "—";
-        overallDot.style.background = "var(--c2)";
-        sumKpis.innerHTML="";
-        return;
-      }
-
-      let sum=0, wsum=0;
-      for(const it of list){
-        const w = (it.ind.unit === "%") ? 1.12 : 1.0;
-        sum += score(it.ind, it.value) * w;
-        wsum += w;
-      }
-      const ov = Math.round(sum/wsum);
-      overallVal.textContent = ov + "%";
-      overallBar.style.width = ov + "%";
-
-      const lab = ov>=95 ? "مستقر" : ov>=85 ? "مراقبة" : "تدخل";
-      overallLabel.textContent = lab;
-      overallDot.style.background = (lab==="مستقر") ? "var(--c1)" : (lab==="مراقبة") ? "var(--c3)" : "var(--c2)";
-
-      // pick 4 headline indicators (logical by domain)
-      const headline = pickHeadlineIndicators();
-      sumKpis.innerHTML = headline.map(h => renderSummaryBox(h, list)).join("");
-    }
-
-    function pickHeadlineIndicators(){
-      // fixed mapping for professionalism
-      return [
-        {key:"الحوكمة", hint:"سجل القرار", selector:(it)=>it.ind.id==="gov_decision_log"},
-        {key:"المخاطر", hint:"حرجة مفتوحة", selector:(it)=>it.ind.id==="risk_open_count"},
-        {key:"الزمن", hint:"التزام الجدول", selector:(it)=>it.ind.id==="del_schedule"},
-        {key:"المالية", hint:"ضبط الميزانية", selector:(it)=>it.ind.id==="fin_budget_control"},
+    function تلخيص_محاور(قائمة){
+      const محاور = [
+        {اسم:"الحوكمة", مجالات:["الحوكمة والقرار","السياسات والامتثال"]},
+        {اسم:"المخاطر", مجالات:["المخاطر","الأمن السيبراني"]},
+        {اسم:"الأداء", مجالات:["الاستراتيجية والأداء","التسليم"]},
+        {اسم:"التشغيل", مجالات:["التشغيل","التغيير والإصدار","الموارد والقدرات","البيانات"]}
       ];
-    }
 
-    function renderSummaryBox(h, list){
-      const found = list.find(h.selector);
-      if(!found){
-        return `<div class="sum-box">
-          <div class="t">${h.key}<span class="trend flat">—</span></div>
-          <div class="n"><span class="unit">—</span>—</div>
-          <div class="bar" style="margin-top:10px"><span style="width:0%"></span></div>
-        </div>`;
-      }
+      return محاور.map(m=>{
+        const عناصر = قائمة.filter(x=>m.مجالات.includes(x.م.مجال));
+        if(!عناصر.length) return {اسم:m.اسم, نسبة:0, قيمة:"—"};
 
-      const pct = Math.round(pctBar(found.ind, found.value));
-      const tclass = found.ind.trend==="up"?"up":found.ind.trend==="down"?"down":"flat";
-      const ttext = found.ind.trend==="up"?"تحسن":found.ind.trend==="down"?"تراجع":"ثبات";
-
-      const display = (found.ind.unit==="%")
-        ? `${found.value}<span class="unit">%</span>`
-        : `${found.value}<span class="unit">${found.ind.unit||"عدد"}</span>`;
-
-      return `<div class="sum-box">
-        <div class="t">${h.key} • ${h.hint}<span class="trend ${tclass}">${ttext}</span></div>
-        <div class="n">${display}</div>
-        <div class="bar" style="margin-top:10px"><span style="width:${pct}%"></span></div>
-      </div>`;
-    }
-
-    /* =========================
-       Actions plan (more realistic)
-       ========================= */
-    function actionPlan(ind, st){
-      const base =
-`1) تدقيق القياس خلال 24 ساعة:
-   - تأكيد مصدر البيانات (${ind.source}) + اكتمال الفترة.
-   - مراجعة العينة/الاستثناءات والتأكد من عدم وجود ازدواجية.
-
-2) معالجة سريعة خلال 72 ساعة:
-   - تعيين مالك إجراء + موعد إغلاق واضح.
-   - تنفيذ تدخل مباشر في أعلى نقطة تأثير (اعتماد/صلاحية/خطوة عملية).
-
-3) معالجة جذرية خلال 7–10 أيام:
-   - تحليل السبب الجذري (5 Whys) وربطها بإجراء منع تكرار.
-   - تحديث Policy/SOP/RACI إذا كان السبب حوكميًا.
-
-4) توثيق واعتماد:
-   - توثيق Before/After + رفع دليل الإغلاق.
-   - تحديث سجل القرارات والمخاطر وإقفال الإجراء رسميًا.`;
-
-      if(st.label==="مستقر"){
-        return `استمرار مضبوط + تحسين تدريجي:\n${base}\n\n5) تحسين اختياري:\n   - رفع مستوى النضج أو توسيع نطاق القياس دون التأثير على التشغيل.`;
-      }
-      if(st.label==="مراقبة"){
-        return `مراقبة نشطة + رفع وتيرة المتابعة:\n${base}\n\n5) تصعيد مشروط:\n   - إذا لم تتحسن القيمة لدورتين، يتم التصعيد بخيارات قرار مختصرة.`;
-      }
-      return `تدخل عاجل + تصعيد رسمي:\n${base}\n\n5) تصعيد خلال 72 ساعة:\n   - عرض الانحراف بخيارات قرار (استمرار/تعزيز موارد/تعديل أولويات).`;
-    }
-
-    /* =========================
-       Rendering
-       ========================= */
-    let cards = [];
-
-    function render(){
-      grid.innerHTML="";
-      cards=[];
-
-      const items = getAllForLevel();
-      const rangeTxt = (fromInput.value && toInput.value) ? ` • (${fromInput.value} → ${toInput.value})` : "";
-      subtitle.textContent = `المستوى: ${labelLevel()} • الفترة: ${labelPeriod()}${rangeTxt} • بيانات تشغيلية تقديرية ثابتة نسبيًا`;
-
-      const computed = items.map(ind=>{
-        const value = computeValue(ind);
-        const st = statusOf(ind, value);
-        const pct = pctBar(ind, value);
-
-        const gap = (ind.better==="low") ? (value - ind.target) : (ind.target - value);
-        const gapAbs = Math.abs(gap);
-
-        const gapText =
-          (ind.unit === "%") ? `${Math.round(gapAbs)}%` :
-          `${Math.round(gapAbs)}`;
-
-        return {ind, value, st, pct, gapAbs, gapText};
+        let sum=0, w=0;
+        عناصر.forEach(it=>{
+          const وزن = it.م.وحدة==="٪" ? 1.12 : 1.0;
+          sum += نسبة_تحقق(it.م, it.قيمة)*وزن;
+          w += وزن;
+        });
+        const avg = Math.round(sum/w);
+        return {اسم:m.اسم, نسبة:avg, قيمة:avg+"٪"};
       });
+    }
 
-      const filtered = applyFilters(computed);
-      const ordered = sortList(filtered);
-
-      buildSummary(ordered);
-
-      if(!ordered.length){
-        grid.innerHTML = "";
-        details.innerHTML = `<h3>لا توجد نتائج</h3>
-          <p class="hint">جرّب تغيير الفلاتر أو المستوى/الفترة.</p>`;
+    function تحديث_الملخص(قائمة){
+      if(!قائمة.length){
+        قيمة_عام.textContent="—";
+        شريط_عام.style.width="0%";
+        وسم_عام.textContent="—";
+        نقطة_عام.style.background="var(--داكن)";
+        مربعات_ملخص.innerHTML="";
         return;
       }
 
-      ordered.forEach((it, idx)=>{
-        const ind = it.ind;
+      let sum=0, w=0;
+      قائمة.forEach(it=>{
+        const وزن = it.م.وحدة==="٪" ? 1.12 : 1.0;
+        sum += نسبة_تحقق(it.م, it.قيمة)*وزن;
+        w += وزن;
+      });
+      const عام = Math.round(sum/w);
+      قيمة_عام.textContent = عام+"٪";
+      شريط_عام.style.width = عام+"%";
 
-        const card = document.createElement("div");
-        card.className = "card";
-        card.dataset.status = it.st.cls;
+      const ح = (عام>=95) ? "مستقر" : (عام>=85) ? "مراقبة" : "تدخل";
+      وسم_عام.textContent = ح;
+      نقطة_عام.style.background = (ح==="مستقر") ? "var(--أساسي)" : (ح==="مراقبة") ? "var(--تمييز)" : "var(--داكن)";
 
-        const owner = ownerShort(ind.owner);
+      const محاور = تلخيص_محاور(قائمة).map(x=>`
+        <div class="مربع">
+          <div class="سطر"><span>${x.اسم}</span><span>${x.قيمة}</span></div>
+          <div class="شريط"><span style="width:${x.نسبة}%"></span></div>
+        </div>
+      `).join("");
+      مربعات_ملخص.innerHTML = محاور;
+    }
 
-        card.innerHTML = `
-          <div class="top">
+    let بطاقات=[];
+
+    function عرض(){
+      شبكة.innerHTML="";
+      بطاقات=[];
+
+      const قاعدة = مؤشرات.filter(x=>x.مستوى===المستوى).map(م=>{
+        const قيمة = قيمة_محسوبة(م);
+        const ح = حالة(م, قيمة);
+        const تقدم = Math.round(نسبة_تحقق(م, قيمة));
+        const فج = فجوة(م, قيمة);
+        return {م, قيمة, حالة:ح, تقدم, فجوة:فج};
+      });
+
+      const بعد_فلاتر = تطبيق_فلاتر_المستوى(قاعدة);
+      const مرتبة = ترتيب(بعد_فلاتر);
+
+      تحديث_الملخص(مرتبة);
+
+      if(!مرتبة.length){
+        تفاصيل.innerHTML = `<h3>لا توجد نتائج</h3><p class="ملاحظة">غيّر الفلاتر أو المستوى أو الفترة لعرض مؤشرات أخرى.</p>`;
+        return;
+      }
+
+      مرتبة.forEach((it, idx)=>{
+        const م = it.م;
+
+        const بطاقة = document.createElement("div");
+        بطاقة.className="بطاقة";
+        بطاقة.dataset.حالة = it.حالة;
+
+        const نص_مستهدف = `${م.مستهدف} ${م.وحدة}`;
+        const نص_فجوة = (م.وحدة==="٪") ? `${it.فجوة}٪` : (م.وحدة==="عدد" ? `${it.فجوة} حالة` : `${it.فجوة} ${م.وحدة}`);
+        const معلومات = (المستوى==="إشرافي")
+          ? `${م.مجال} • ${(م.برنامج||"غير مصنف")} • ${الفترة} • آخر تحديث: ${م.تحديث}`
+          : (المستوى==="تشغيلي")
+            ? `${م.مجال} • ${(م.قناة||"غير مصنف")} • ${(م.فريق||"غير مصنف")} • ${الفترة} • آخر تحديث: ${م.تحديث}`
+            : `${م.مجال} • ${الفترة} • آخر تحديث: ${م.تحديث}`;
+
+        بطاقة.innerHTML = `
+          <div class="علوي">
             <div>
-              <div class="name">${ind.name}</div>
-              <div class="meta">${ind.domain} • ${labelPeriod()} • آخر تحديث: ${ind.last}</div>
+              <div class="اسم">${م.اسم}</div>
+              <div class="وسوم">${معلومات}</div>
             </div>
-            <div class="value">
-              <span class="u">${ind.unit || (ind.better==="low" ? "عدد" : "")}</span>
-              <span class="num">${it.value}</span>
+            <div class="قيمة-بطاقة">
+              <span class="وحدة">${م.وحدة}</span>
+              <span>${it.قيمة}</span>
             </div>
           </div>
 
-          <div class="status">
-            <div class="chipStatus ${it.st.cls}">
-              <span class="s-dot"></span>
-              ${it.st.label}
+          <div class="صف-حالة">
+            <div class="شارة-حالة ${it.حالة}">
+              <span class="نقطة-صغيرة"></span>
+              ${it.حالة}
             </div>
-            <span class="trend ${ind.trend==="up"?"up":ind.trend==="down"?"down":"flat"}">
-              ${ind.trend==="up"?"تحسن":ind.trend==="down"?"تراجع":"ثبات"}
-            </span>
+            <div class="شارة">التقدم: ${it.تقدم}٪</div>
           </div>
 
-          <div class="bar" style="margin-top:10px"><span style="width:${Math.round(it.pct)}%"></span></div>
+          <div class="خط-تقدم"><span style="width:${it.تقدم}%"></span></div>
 
-          <div class="mini">
-            <div class="b"><span>المستهدف</span><strong class="num">${ind.target} ${ind.unit||""}</strong></div>
-            <div class="b"><span>الفجوة</span><strong class="num">${it.gapText}</strong></div>
-            <div class="b"><span>المالك</span><strong>${owner}</strong></div>
+          <div class="تفاصيل-مختصرة">
+            <div class="حقل"><span>المستهدف</span><strong>${نص_مستهدف}</strong></div>
+            <div class="حقل"><span>الفجوة</span><strong>${نص_فجوة}</strong></div>
+            <div class="حقل"><span>المالك</span><strong>${م.مالك}</strong></div>
+            <div class="حقل"><span>إجراء مقترح</span><strong>${إجراء_مختصر(it.حالة)}</strong></div>
           </div>
         `;
 
-        card.addEventListener("click", ()=> activate(idx, ordered));
-        grid.appendChild(card);
-
-        cards.push({el:card, data:it});
+        بطاقة.addEventListener("click", ()=>تفعيل(idx, مرتبة));
+        شبكة.appendChild(بطاقة);
+        بطاقات.push({عنصر:بطاقة, بيانات:it});
       });
 
-      activeIdx = Math.max(0, Math.min(activeIdx, cards.length-1));
-      activate(activeIdx, ordered, true);
+      المؤشر_النشط = Math.max(0, Math.min(المؤشر_النشط, بطاقات.length-1));
+      تفعيل(المؤشر_النشط, مرتبة, true);
     }
 
-    function activate(idx, ordered, quiet){
-      if(!cards.length || !cards[idx]) return;
-      cards.forEach((c,i)=>c.el.classList.toggle("active", i===idx));
-      activeIdx = idx;
+    function تفعيل(idx, قائمة, صامت){
+      if(!بطاقات.length || !بطاقات[idx]) return;
+      بطاقات.forEach((c,i)=>c.عنصر.classList.toggle("نشط", i===idx));
+      المؤشر_النشط = idx;
 
-      const it = cards[idx].data;
-      const ind = it.ind;
+      const it = بطاقات[idx].بيانات;
+      const م = it.م;
 
-      const from = fromInput.value, to = toInput.value;
-      const dateTxt = (from && to) ? `نطاق مخصص: ${from} → ${to}` : `حسب الفترة: ${labelPeriod()}`;
-      const evidenceList = ind.evidence.map(x => `• ${x}`).join("\n");
-      const hist = historyBars(ind).map(h => `<i style="height:${h}%"></i>`).join("");
+      const نطاق = (من.value && إلى.value) ? `نطاق مخصص: ${من.value} إلى ${إلى.value}` : `حسب الفترة: ${الفترة}`;
+      const نص_مستهدف = `${م.مستهدف} ${م.وحدة}`;
+      const نص_فجوة = (م.وحدة==="٪") ? `${it.فجوة}٪` : (م.وحدة==="عدد" ? `${it.فجوة} حالة` : `${it.فجوة} ${م.وحدة}`);
 
-      details.innerHTML = `
-        <h3>${ind.name}</h3>
-        <p class="hint">${dateTxt}. المجال: ${ind.domain}. آخر تحديث: ${ind.last}. (البيانات ثابتة نسبيًا لتعكس قياسًا واقعيًا)</p>
+      تفاصيل.innerHTML = `
+        <h3>${م.اسم}</h3>
+        <p class="ملاحظة">${نطاق}. الحالة: ${it.حالة}. الإجراء المقترح: ${إجراء_مختصر(it.حالة)}</p>
 
-        <div class="detailsGrid">
-          <div class="box">
+        <div class="شبكة-تفاصيل">
+          <div class="صندوق">
             <span>القيمة الحالية</span>
-            <strong class="num">${it.value} ${ind.unit||""}</strong>
-            <div class="hist">${hist}</div>
+            <strong>${it.قيمة} ${م.وحدة}</strong>
+            <span style="margin-top:10px;display:block;">نسبة التقدم</span>
+            <strong>${it.تقدم}٪</strong>
           </div>
 
-          <div class="box">
-            <span>المستهدف</span>
-            <strong class="num">${ind.target} ${ind.unit||""}</strong>
-            <span style="margin-top:10px; display:block;">نسبة التقدم</span>
-            <strong class="num">${Math.round(it.pct)}%</strong>
+          <div class="صندوق">
+            <span>المستهدف والفجوة</span>
+            <strong>المستهدف: ${نص_مستهدف}\nالفجوة: ${نص_فجوة}</strong>
           </div>
 
-          <div class="box">
-            <span>حالة الحوكمة</span>
-            <strong>${it.st.label}</strong>
-            <span style="margin-top:10px; display:block;">تعريف المؤشر</span>
-            <strong>${ind.def}</strong>
+          <div class="صندوق">
+            <span>التعريف</span>
+            <strong>${م.تعريف}</strong>
           </div>
 
-          <div class="box">
-            <span>المالك + مصدر البيانات</span>
-            <strong>${ind.owner}</strong>
-            <span style="margin-top:10px; display:block;">المصدر</span>
-            <strong>${ind.source}</strong>
+          <div class="صندوق">
+            <span>المالك ومصدر البيانات</span>
+            <strong>${م.مالك}\nالمصدر: ${م.مصدر}\nآخر تحديث: ${م.تحديث}</strong>
           </div>
 
-          <div class="box">
-            <span>الأدلة الداعمة</span>
-            <strong>${evidenceList}</strong>
-          </div>
-
-          <div class="box">
-            <span>المخاطر المرتبطة</span>
-            <strong>${ind.risk}</strong>
-            <span style="margin-top:10px; display:block;">طريقة الاحتساب</span>
-            <strong>${ind.formula}</strong>
-          </div>
-
-          <div class="box">
-            <span>الإجراء المقترح (قابل للتنفيذ)</span>
-            <strong>${actionPlan(ind, it.st)}</strong>
+          <div class="صندوق">
+            <span>إجراء مقترح مختصر</span>
+            <strong>${إجراء_مختصر(it.حالة)}</strong>
           </div>
         </div>
       `;
 
-      if(!quiet) details.scrollIntoView({behavior:"smooth", block:"start"});
+      if(!صامت) تفاصيل.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    /* =========================
-       Bind controls
-       ========================= */
-    levelBtns.forEach(btn=>{
+    /* أحداث التحكم */
+    أزرار_المستوى.forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        levelBtns.forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        level = btn.getAttribute("data-level") || "exec";
-        activeIdx = 0;
-        render();
+        أزرار_المستوى.forEach(b=>b.classList.remove("نشط"));
+        btn.classList.add("نشط");
+        المستوى = btn.getAttribute("data-مستوى") || "تنفيذي";
+        المؤشر_النشط=0;
+        تحديث_فلاتر_حسب_المستوى();
+        عرض();
       });
     });
 
-    periodBtns.forEach(btn=>{
+    أزرار_الفترة.forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        periodBtns.forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        period = btn.getAttribute("data-period") || "daily";
-        render();
+        أزرار_الفترة.forEach(b=>b.classList.remove("نشط"));
+        btn.classList.add("نشط");
+        الفترة = btn.getAttribute("data-فترة") || "يومي";
+        المؤشر_النشط=0;
+        عرض();
       });
     });
 
-    [fromInput, toInput, filterDomain, filterOwner, filterStatus, sortBy].forEach(el=>{
-      el.addEventListener("change", ()=>{ activeIdx=0; render(); });
+    const كل_مدخلات = [
+      من, إلى, فرز,
+      تنفيذي_مجال, تنفيذي_مالك, تنفيذي_حالة,
+      إشرافي_مجال, إشرافي_برنامج, إشرافي_مالك, إشرافي_حالة,
+      تشغيلي_مجال, تشغيلي_قناة, تشغيلي_فريق, تشغيلي_حالة
+    ];
+    كل_مدخلات.forEach(el=> el.addEventListener("change", ()=>{ المؤشر_النشط=0; عرض(); }));
+
+    زر_إعادة.addEventListener("click", ()=>{
+      من.value=""; إلى.value="";
+      تحديث_فلاتر_حسب_المستوى();
+      المؤشر_النشط=0;
+      عرض();
     });
 
-    btnPresent.addEventListener("click", ()=>{
-      document.body.classList.toggle("presentation");
-      btnPresent.classList.toggle("active", document.body.classList.contains("presentation"));
-      btnPresent.textContent = document.body.classList.contains("presentation") ? "إلغاء وضع العرض" : "وضع عرض";
+    زر_النمط.addEventListener("click", ()=>{
+      document.body.classList.toggle("نمط-داكن");
+      زر_النمط.textContent = document.body.classList.contains("نمط-داكن") ? "نمط فاتح" : "نمط داكن";
     });
 
-    btnReset.addEventListener("click", ()=>{
-      fromInput.value = "";
-      toInput.value = "";
-      filterDomain.value = "all";
-      filterOwner.value = "all";
-      filterStatus.value = "all";
-      sortBy.value = "risk";
-      periodBtns.forEach(b=>b.classList.remove("active"));
-      periodBtns[0].classList.add("active");
-      period = "daily";
-      activeIdx = 0;
-      render();
+    زر_العرض.addEventListener("click", ()=>{
+      document.body.classList.toggle("وضع-عرض");
+      const مفعّل = document.body.classList.contains("وضع-عرض");
+      زر_العرض.textContent = مفعّل ? "الخروج من العرض" : "وضع العرض";
     });
 
-    /* =========================
-       Init
-       ========================= */
-    initFilterOptions();
-    render();
+    /* تشغيل أولي */
+    تحديث_فلاتر_حسب_المستوى();
+    عرض();
 
   }catch(e){
-    // silent
+    /* صمت */
   }
 })();
 </script>
+
 </body>
 </html>

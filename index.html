@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة الحوكمة</title>
-</head>
-<body>
-<section id="governance-dashboard-scope" dir="rtl" lang="ar">
-
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&amp;display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>لوحة معلومات الحوكمة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* =========================
-       SCOPE + TOKENS (ONLY 3 COLORS)
+       Governance Dashboard 2.0 (Single-file)
+       Modern + Formal | RTL | Stable-ish data
        ========================= */
-    #governance-dashboard-scope{
-      --c1:#006250;  /* primary */
-      --c2:#273233;  /* dark */
-      --c3:#15adff;  /* accent */
+    :root{
+      --c1:#006250;   /* primary */
+      --c2:#273233;   /* dark */
+      --c3:#15adff;   /* accent */
 
       --bg:#ffffff;
       --panel:#f7f9fb;
@@ -27,49 +24,80 @@
 
       --r:22px;
       --shadow:0 16px 44px rgba(39,50,51,.10);
-      --shadowSoft:0 18px 40px rgba(39,50,51,.12); /* hover soft */
-      --shadowFocus:0 20px 48px rgba(21,173,255,.14); /* hover accent */
-      background:var(--bg);
-      font-family:"Almarai",sans-serif;
-      padding:28px 16px;
-    }
-    #governance-dashboard-scope *{box-sizing:border-box}
+      --shadowSoft:0 18px 40px rgba(39,50,51,.12);
+      --shadowFocus:0 20px 48px rgba(21,173,255,.14);
 
-    /* Container full width */
-    #governance-dashboard-scope .gd-container{max-width:100%; margin:0 auto;}
+      --ok: rgba(0,98,80,.10);
+      --warn: rgba(21,173,255,.12);
+      --bad: rgba(39,50,51,.10);
+
+      --maxw: 1200px;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:"Almarai", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--c2);
+    }
+    *{box-sizing:border-box}
+
+    .gd-wrap{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:22px 14px 34px;
+    }
 
     /* =========================
        HEADER
        ========================= */
-    #governance-dashboard-scope .gd-header{
-      display:flex; flex-wrap:wrap; gap:12px 14px;
-      justify-content:space-between; align-items:center;
-      margin-bottom:16px;
+    .gd-header{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 14px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
     }
-    #governance-dashboard-scope .gd-head-title{
-      display:flex; flex-direction:column; gap:4px;
+    .gd-title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:240px;
     }
-    #governance-dashboard-scope .gd-head-title h2{
-      margin:0; font-size:18px; font-weight:800; color:var(--c2);
+    .gd-title h1{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
       letter-spacing:.2px;
+      color:var(--c2);
     }
-    #governance-dashboard-scope .gd-sub{
-      font-size:12px; color:var(--muted);
+    .gd-sub{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+      line-height:1.7;
     }
 
-    #governance-dashboard-scope .gd-controls{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    .gd-controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
     }
 
-    /* pills group */
-    #governance-dashboard-scope .gd-group{
-      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    .pill{
+      display:flex;
+      gap:8px;
+      align-items:center;
       padding:8px;
       background:var(--panel);
       border:1px solid var(--line);
       border-radius:999px;
     }
-    #governance-dashboard-scope button{
+
+    button{
       border:none;
       background:transparent;
       color:var(--c2);
@@ -78,33 +106,35 @@
       cursor:pointer;
       font-family:inherit;
       font-size:13px;
-      font-weight:700;
+      font-weight:800;
       transition:transform .18s ease, box-shadow .18s ease, background .25s ease, color .25s ease;
       outline:none;
       user-select:none;
+      white-space:nowrap;
     }
-    #governance-dashboard-scope button:hover{
+    button:hover{
       transform:translateY(-2px);
       box-shadow:0 10px 18px rgba(39,50,51,.10);
       background:#eef7ff;
-      color:var(--c2);
     }
-    #governance-dashboard-scope button.active{
+    button.active{
       background:linear-gradient(135deg,var(--c2),var(--c1));
       color:#fff;
       box-shadow:0 16px 30px rgba(0,98,80,.22);
+      transform:translateY(-1px);
     }
 
-    /* Dates */
-    #governance-dashboard-scope .gd-dates{
-      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    .gd-dates{
+      display:flex; gap:8px; align-items:center;
       padding:8px 10px;
       background:var(--panel);
       border:1px solid var(--line);
       border-radius:999px;
     }
-    #governance-dashboard-scope .gd-dates label{font-size:12px; color:var(--muted); font-weight:700;}
-    #governance-dashboard-scope input[type="date"]{
+    .gd-dates label{
+      font-size:12px; color:var(--muted); font-weight:800;
+    }
+    input[type="date"]{
       border:1px solid var(--line);
       background:#fff;
       padding:6px 10px;
@@ -115,59 +145,102 @@
       outline:none;
     }
 
-    /* =========================
-       OVERALL
-       ========================= */
-    #governance-dashboard-scope .gd-overall{
-      border-radius:var(--r);
+    .gd-select{
+      display:flex; gap:8px; align-items:center;
+      padding:8px 10px;
+      background:var(--panel);
       border:1px solid var(--line);
+      border-radius:999px;
+    }
+    .gd-select select{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:7px 10px;
+      border-radius:999px;
+      font-family:inherit;
+      font-size:12px;
+      color:var(--c2);
+      outline:none;
+      min-width:170px;
+      font-weight:800;
+    }
+
+    .gd-actions{
+      display:flex; gap:8px; align-items:center;
+    }
+    .gd-actions .ghost{
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .gd-actions .ghost.active{
+      background:linear-gradient(135deg,var(--c3),var(--c1));
+      box-shadow:0 16px 30px rgba(21,173,255,.16);
+    }
+
+    /* =========================
+       EXEC SUMMARY
+       ========================= */
+    .gd-summary{
+      border:1px solid var(--line);
+      border-radius:var(--r);
       background:linear-gradient(135deg, rgba(21,173,255,.10), rgba(0,98,80,.08), #fff);
       box-shadow:var(--shadow);
-      padding:18px;
+      padding:16px;
       position:relative;
       overflow:hidden;
       margin-bottom:14px;
     }
-    #governance-dashboard-scope .gd-overall::before{
+    .gd-summary::before{
       content:"";
       position:absolute; inset:-2px;
-      background:radial-gradient(circle at 20% 25%, rgba(21,173,255,.18), transparent 40%),
-                 radial-gradient(circle at 88% 40%, rgba(0,98,80,.12), transparent 45%);
+      background:
+        radial-gradient(circle at 16% 28%, rgba(21,173,255,.18), transparent 40%),
+        radial-gradient(circle at 86% 42%, rgba(0,98,80,.12), transparent 45%);
       pointer-events:none;
     }
-    #governance-dashboard-scope .gd-overall .row{
+
+    .sum-top{
       position:relative;
-      display:flex; flex-wrap:wrap; gap:12px;
-      justify-content:space-between; align-items:flex-end;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 14px;
+      align-items:flex-end;
+      justify-content:space-between;
+      margin-bottom:12px;
     }
-    #governance-dashboard-scope .gd-overall .label{
-      font-size:13px; color:var(--muted); font-weight:800;
-    }
-    #governance-dashboard-scope .gd-overall .value{
-      font-size:42px; line-height:1;
+    .sum-main .label{
+      font-size:13px;
+      color:var(--muted);
       font-weight:900;
-      color:#000 !important;
-      -webkit-text-fill-color:#000 !important;
     }
-    #governance-dashboard-scope .gd-pill{
-      display:inline-flex; align-items:center; gap:8px;
+    .sum-main .value{
+      font-size:42px;
+      font-weight:900;
+      line-height:1;
+      color:#000;
+    }
+
+    .chip{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       background:#fff;
       border:1px solid var(--line);
       border-radius:999px;
       padding:7px 12px;
       font-size:12px;
-      font-weight:800;
+      font-weight:900;
       color:var(--c2);
+      width:max-content;
     }
-    #governance-dashboard-scope .dot{
+    .dot{
       width:10px; height:10px; border-radius:50%;
       background:var(--c1);
       box-shadow:0 0 0 6px rgba(0,98,80,.10);
     }
 
-    /* Overall bar */
-    #governance-dashboard-scope .gd-bar{
-      margin-top:12px;
+    .bar{
       height:10px;
       background:#eef2f6;
       border-radius:999px;
@@ -175,17 +248,17 @@
       border:1px solid var(--line);
       position:relative;
     }
-    #governance-dashboard-scope .gd-bar span{
-      display:block; height:100%; width:0%;
+    .bar > span{
+      display:block;
+      height:100%;
+      width:0%;
       border-radius:999px;
       background:linear-gradient(90deg,var(--c1),var(--c3));
       transition:width .65s ease;
       position:relative;
       overflow:hidden;
     }
-
-    /* Shine moves ONLY on hover (visual, percent fixed) */
-    #governance-dashboard-scope .gd-bar span::after{
+    .bar > span::after{
       content:"";
       position:absolute; top:0; left:-45%;
       width:45%; height:100%;
@@ -193,28 +266,85 @@
       opacity:0;
       transition:opacity .2s ease;
     }
-    #governance-dashboard-scope .gd-card:hover .gd-bar span::after,
-    #governance-dashboard-scope .gd-overall:hover .gd-bar span::after{
+    .gd-summary:hover .bar > span::after,
+    .card:hover .bar > span::after{
       opacity:1;
       animation:flow 2.4s linear infinite;
     }
-    @keyframes flow{
-      0%{left:-45%}
-      100%{left:120%}
+    @keyframes flow{0%{left:-45%}100%{left:120%}}
+
+    .sum-kpis{
+      position:relative;
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
     }
+    @media (max-width: 980px){
+      .sum-kpis{grid-template-columns:repeat(2, minmax(0,1fr));}
+    }
+    @media (max-width: 520px){
+      .sum-kpis{grid-template-columns:1fr;}
+    }
+    .sum-box{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .sum-box:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 30px rgba(39,50,51,.10);
+    }
+    .sum-box .t{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:900;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .sum-box .n{
+      font-size:18px;
+      font-weight:900;
+      color:#000;
+      display:flex;
+      align-items:baseline;
+      gap:6px;
+    }
+    .sum-box .unit{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:900;
+    }
+    .trend{
+      font-size:12px;
+      font-weight:900;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--c2);
+      white-space:nowrap;
+    }
+    .trend.up{border-color:rgba(0,98,80,.25); background:rgba(0,98,80,.06)}
+    .trend.down{border-color:rgba(39,50,51,.25); background:rgba(39,50,51,.06)}
+    .trend.flat{border-color:rgba(21,173,255,.25); background:rgba(21,173,255,.06)}
 
     /* =========================
        GRID
        ========================= */
-    #governance-dashboard-scope .gd-grid{
+    .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(270px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(275px, 1fr));
       gap:14px;
       margin-top:10px;
     }
 
-    /* Cards */
-    #governance-dashboard-scope .gd-card{
+    .card{
       background:linear-gradient(135deg, rgba(21,173,255,.06), rgba(0,98,80,.05), #fff);
       border:1px solid var(--line);
       border-radius:var(--r);
@@ -225,46 +355,55 @@
       position:relative;
       overflow:hidden;
     }
-
-    /* ✅ HOVER SHADOW (NO MOVING RING) */
-    #governance-dashboard-scope .gd-card::before{ display:none !important; } /* remove ring */
-    #governance-dashboard-scope .gd-card:hover{
+    .card:hover{
       transform:translateY(-4px);
       border-color:rgba(21,173,255,.35);
       box-shadow:var(--shadowSoft);
     }
-
-    #governance-dashboard-scope .gd-card.active{
+    .card.active{
       border-color:rgba(0,98,80,.40);
       box-shadow:var(--shadowFocus);
       transform:translateY(-2px);
     }
 
-    #governance-dashboard-scope .gd-top{
+    /* subtle status tint */
+    .card[data-status="good"]{ background:linear-gradient(135deg, var(--ok), rgba(255,255,255,.9)); }
+    .card[data-status="warn"]{ background:linear-gradient(135deg, var(--warn), rgba(255,255,255,.9)); }
+    .card[data-status="bad"] { background:linear-gradient(135deg, var(--bad), rgba(255,255,255,.92)); }
+
+    .top{
       display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
     }
-    #governance-dashboard-scope .gd-name{
+    .name{
       font-size:13px; font-weight:900; color:var(--c2);
-      line-height:1.5;
+      line-height:1.55;
     }
-    #governance-dashboard-scope .gd-meta{
-      font-size:12px; color:var(--muted); font-weight:700;
-      margin-top:2px;
+    .meta{
+      font-size:12px; color:var(--muted); font-weight:800;
+      margin-top:4px;
+      line-height:1.6;
     }
-
-    #governance-dashboard-scope .gd-value{
-      font-size:34px; font-weight:900;
-      color:#000 !important;
-      -webkit-text-fill-color:#000 !important;
+    .value{
+      font-size:34px;
+      font-weight:900;
+      color:#000;
       line-height:1.1;
       text-align:left;
       white-space:nowrap;
+      display:flex;
+      align-items:baseline;
+      gap:6px;
     }
-    #governance-dashboard-scope .gd-unit{font-size:12px; color:var(--muted); font-weight:800; margin-right:6px;}
+    .u{
+      font-size:12px; color:var(--muted); font-weight:900;
+    }
 
-    /* Status chip */
-    #governance-dashboard-scope .gd-status{
+    .status{
       margin-top:10px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .chipStatus{
       display:inline-flex; align-items:center; gap:8px;
       padding:6px 12px;
       border-radius:999px;
@@ -275,39 +414,41 @@
       color:var(--c2);
       width:max-content;
     }
-    #governance-dashboard-scope .gd-status .s-dot{
+    .s-dot{
       width:8px; height:8px; border-radius:50%;
       background:var(--c1);
       box-shadow:0 0 0 5px rgba(0,98,80,.10);
     }
-    #governance-dashboard-scope .gd-status.warn .s-dot{background:var(--c3); box-shadow:0 0 0 5px rgba(21,173,255,.12)}
-    #governance-dashboard-scope .gd-status.bad  .s-dot{background:var(--c2); box-shadow:0 0 0 5px rgba(39,50,51,.12)}
+    .chipStatus.warn .s-dot{background:var(--c3); box-shadow:0 0 0 5px rgba(21,173,255,.12)}
+    .chipStatus.bad  .s-dot{background:var(--c2); box-shadow:0 0 0 5px rgba(39,50,51,.12)}
 
-    /* Mini blocks */
-    #governance-dashboard-scope .gd-mini{
+    .mini{
       margin-top:10px;
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:8px;
     }
-    #governance-dashboard-scope .gd-mini .b{
+    .mini .b{
       background:#fff;
       border:1px solid var(--line);
       border-radius:14px;
       padding:10px;
+      min-height:64px;
     }
-    #governance-dashboard-scope .gd-mini .b span{
-      display:block; font-size:11px; color:var(--muted); font-weight:800;
+    .mini .b span{
+      display:block; font-size:11px; color:var(--muted); font-weight:900;
       margin-bottom:4px;
     }
-    #governance-dashboard-scope .gd-mini .b strong{
+    .mini .b strong{
       display:block; font-size:13px; color:var(--c2); font-weight:900;
+      line-height:1.4;
     }
+    .num{color:#000}
 
     /* =========================
-       DETAILS PANEL
+       DETAILS
        ========================= */
-    #governance-dashboard-scope .gd-details{
+    .details{
       margin-top:14px;
       border:1px solid var(--line);
       border-radius:var(--r);
@@ -317,58 +458,56 @@
       position:relative;
       overflow:hidden;
     }
-    #governance-dashboard-scope .gd-details h3{
+    .details h3{
       margin:0 0 8px;
       font-size:16px;
       font-weight:900;
       color:var(--c2);
+      line-height:1.6;
     }
-    #governance-dashboard-scope .gd-details .hint{
+    .hint{
       margin:0 0 12px;
       font-size:12px;
       color:var(--muted);
-      line-height:1.7;
-      font-weight:700;
+      line-height:1.8;
+      font-weight:800;
     }
-    #governance-dashboard-scope .gd-details-grid{
+
+    .detailsGrid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
       gap:12px;
     }
-    #governance-dashboard-scope .gd-box{
+    .box{
       background:#fff;
       border:1px solid var(--line);
       border-radius:16px;
       padding:14px;
       transition:transform .18s ease, box-shadow .18s ease;
     }
-    #governance-dashboard-scope .gd-box:hover{
-      transform:translateY(-2px);
-      box-shadow:0 16px 30px rgba(39,50,51,.10);
-    }
-    #governance-dashboard-scope .gd-box span{
+    .box:hover{ transform:translateY(-2px); box-shadow:0 16px 30px rgba(39,50,51,.10); }
+    .box span{
       display:block;
       font-size:12px;
       color:var(--muted);
       font-weight:900;
       margin-bottom:6px;
     }
-    #governance-dashboard-scope .gd-box strong{
+    .box strong{
       display:block;
       font-size:14px;
       color:var(--c2);
       font-weight:900;
-      line-height:1.7;
+      line-height:1.85;
       white-space:pre-line;
     }
 
-    /* tiny history bars */
-    #governance-dashboard-scope .hist{
+    .hist{
       margin-top:10px;
       display:flex; gap:6px; align-items:flex-end;
       height:44px;
     }
-    #governance-dashboard-scope .hist i{
+    .hist i{
       display:block;
       width:100%;
       max-width:18px;
@@ -379,34 +518,38 @@
       transform-origin:bottom;
       transition:transform .18s ease;
     }
-    #governance-dashboard-scope .gd-box:hover .hist i{transform:scaleY(1.03)}
+    .box:hover .hist i{transform:scaleY(1.03)}
 
-    /* Numbers black everywhere */
-    #governance-dashboard-scope .gd-details .num,
-    #governance-dashboard-scope .gd-box .num,
-    #governance-dashboard-scope .gd-mini strong,
-    #governance-dashboard-scope .gd-overall .value{
-      color:#000 !important;
-      -webkit-text-fill-color:#000 !important;
-    }
+    /* =========================
+       PRESENTATION MODE
+       ========================= */
+    body.presentation .gd-wrap{max-width:1400px}
+    body.presentation .gd-controls{display:none}
+    body.presentation .gd-title h1{font-size:20px}
+    body.presentation .grid{grid-template-columns:repeat(auto-fit, minmax(320px, 1fr))}
+    body.presentation .card .value{font-size:38px}
+
   </style>
+</head>
 
-  <div class="gd-container">
+<body>
+  <div class="gd-wrap">
 
     <div class="gd-header">
-      <div class="gd-head-title">
-        <h2>لوحة الحوكمة التفاعلية للمبادرة</h2>
-        <div class="gd-sub" id="gdSubtitle">بيانات تجريبية واقعية • تتغير حسب الفترة والتاريخ</div>
+      <div class="gd-title">
+        <h1>لوحة معلومات الحوكمة</h1>
+        <div class="gd-sub" id="subtitle">بيانات تشغيلية تقديرية • تعكس حالة الحوكمة عبر مجالات متعددة (ثابتة نسبيًا)</div>
       </div>
 
       <div class="gd-controls">
-        <div class="gd-group" aria-label="Levels">
+
+        <div class="pill" aria-label="Levels">
           <button type="button" class="active" data-level="exec">تنفيذي</button>
           <button type="button" data-level="sup">إشرافي</button>
           <button type="button" data-level="ops">تشغيلي</button>
         </div>
 
-        <div class="gd-group" aria-label="Periods">
+        <div class="pill" aria-label="Periods">
           <button type="button" class="active" data-period="daily">يومي</button>
           <button type="button" data-period="weekly">أسبوعي</button>
           <button type="button" data-period="monthly">شهري</button>
@@ -414,883 +557,701 @@
         </div>
 
         <div class="gd-dates" aria-label="Date Range">
-          <label>من</label><input type="date" id="gdFrom">
-          <label>إلى</label><input type="date" id="gdTo">
+          <label>من</label><input type="date" id="from">
+          <label>إلى</label><input type="date" id="to">
         </div>
+
+        <div class="gd-select" aria-label="Filters">
+          <select id="filterDomain" title="المجال">
+            <option value="all">كل المجالات</option>
+          </select>
+          <select id="filterOwner" title="المالك">
+            <option value="all">كل الملاك</option>
+          </select>
+          <select id="filterStatus" title="الحالة">
+            <option value="all">كل الحالات</option>
+            <option value="good">مستقر</option>
+            <option value="warn">مراقبة</option>
+            <option value="bad">تدخل</option>
+          </select>
+        </div>
+
+        <div class="gd-select" aria-label="Sort">
+          <select id="sortBy" title="الفرز">
+            <option value="risk">الأكثر خطورة أولاً</option>
+            <option value="gap">الأعلى فجوة</option>
+            <option value="name">الاسم (أ-ي)</option>
+          </select>
+        </div>
+
+        <div class="gd-actions">
+          <button type="button" class="ghost" id="btnPresent">وضع عرض</button>
+          <button type="button" class="ghost" id="btnReset">إعادة ضبط</button>
+        </div>
+
       </div>
     </div>
 
-    <div class="gd-overall" id="gdOverallPanel">
-      <div class="row">
-        <div>
-          <div class="label">المؤشر العام للحوكمة</div>
-          <div class="value" id="gdOverallValue">0%</div>
+    <!-- EXEC SUMMARY -->
+    <div class="gd-summary" id="summary">
+      <div class="sum-top">
+        <div class="sum-main">
+          <div class="label">مؤشر صحة الحوكمة العام</div>
+          <div class="value" id="overallVal">0%</div>
         </div>
-        <div class="gd-pill">
-          <span class="dot" id="gdOverallDot"></span>
-          <span id="gdOverallLabel">—</span>
+
+        <div class="chip">
+          <span class="dot" id="overallDot"></span>
+          <span id="overallLabel">—</span>
         </div>
       </div>
-      <div class="gd-bar">
-        <span id="gdOverallBar" style="width:0%"></span>
-      </div>
+
+      <div class="bar"><span id="overallBar" style="width:0%"></span></div>
+
+      <div class="sum-kpis" id="sumKpis"></div>
     </div>
 
-    <div class="gd-grid" id="gdGrid"></div>
+    <!-- GRID -->
+    <div class="grid" id="grid"></div>
 
-    <div class="gd-details" id="gdDetails">
+    <!-- DETAILS -->
+    <div class="details" id="details">
       <h3>اختر مؤشرًا</h3>
-      <p class="hint">اضغط على أي بطاقة لعرض تفاصيل الحوكمة والأدلة وسجل آخر 6 فترات. التأثيرات تظهر عند مرور الماوس فقط.</p>
+      <p class="hint">اضغط على أي بطاقة لعرض التفاصيل والأدلة وخطة الإجراء. البيانات ثابتة نسبيًا لتعكس القياس التشغيلي الواقعي.</p>
     </div>
 
   </div>
 
-  <script>
-    (function(){
-      try{
-        const scope = document.getElementById("governance-dashboard-scope");
-        if(!scope) return;
-
-        const grid = scope.querySelector("#gdGrid");
-        const details = scope.querySelector("#gdDetails");
-        const subtitle = scope.querySelector("#gdSubtitle");
-
-        const overallValue = scope.querySelector("#gdOverallValue");
-        const overallBar = scope.querySelector("#gdOverallBar");
-        const overallLabel = scope.querySelector("#gdOverallLabel");
-        const overallDot = scope.querySelector("#gdOverallDot");
-
-        const levelButtons = scope.querySelectorAll("[data-level]");
-        const periodButtons = scope.querySelectorAll("[data-period]");
-        const fromInput = scope.querySelector("#gdFrom");
-        const toInput = scope.querySelector("#gdTo");
-
-        if(!grid || !details || !overallValue || !overallBar || !overallLabel || !overallDot) return;
-
-        let level = "exec";
-        let period = "daily";
-        let activeIdx = 0;
-
-        /* ========= FULL KPI LIST (do not lose any indicator)
-           All stages you provided + transversal
-        ========= */
-        const DATA = [
-          /* --- Launch | 2026-01 (Governance & Readiness) --- */
-          {id:"launch_charter", level:"exec", stage:"مرحلة الانطلاق | 2026-01", name:"اعتماد ميثاق المبادرة رسميًا", unit:"%", target:100, better:"high",
-            def:"نسبة اعتماد ميثاق المبادرة رسميًا (نطاق، أدوار، صلاحيات، آليات قرار).",
-            owner:"لجنة التوجيه + PMO",
-            source:"وثيقة الميثاق + محاضر اعتماد",
-            evidence:["نسخة ميثاق موقعة ومعتمدة","محضر لجنة التوجيه لاعتماد الميثاق","تعميم الإطلاق (إن وجد)"],
-            risk:"غياب الميثاق يخلق تضارب صلاحيات وتأخير قرارات.",
-            formula:"(بنود الميثاق المعتمدة ÷ إجمالي البنود) × 100",
-            base:100, volatility:"low"
-          },
-          {id:"launch_okrs", level:"exec", stage:"مرحلة الانطلاق | 2026-01", name:"تحديد الأهداف الاستراتيجية ومؤشرات النجاح (OKRs/KPIs)", unit:"%", target:100, better:"high",
-            def:"توثيق واعتماد OKRs/KPIs مع تعريفات قياس واضحة وربطها بمصادر البيانات.",
-            owner:"مالك المبادرة + PMO",
-            source:"وثيقة OKRs + قاموس KPIs",
-            evidence:["وثيقة OKRs معتمدة","تعريف KPIs (قاموس بيانات)","خريطة ربط المؤشرات بمصدر البيانات"],
-            risk:"مؤشرات غير معرفة تعني قياس غير موثوق وقرارات غير دقيقة.",
-            formula:"(OKRs/KPIs المعتمدة ÷ المطلوبة) × 100",
-            base:99, volatility:"low"
-          },
-          {id:"launch_team", level:"sup", stage:"مرحلة الانطلاق | 2026-01", name:"اكتمال تشكيل الفريق وتحديد الأدوار والمسؤوليات", unit:"%", target:100, better:"high",
-            def:"اكتمال تشكيل الفريق وتحديد RACI للأدوار الحرجة وتوزيع المسؤوليات.",
-            owner:"PMO + الموارد البشرية",
-            source:"هيكل الفريق + RACI",
-            evidence:["خطابات تكليف/قرارات","RACI معتمد","خطة تشغيل أول 30 يوم"],
-            risk:"نقص الأدوار يسبب توقفات/تأخير متسلسل.",
-            formula:"(الأدوار المغطاة ÷ الأدوار المطلوبة) × 100",
-            base:92, volatility:"med"
-          },
-          {id:"launch_resources", level:"exec", stage:"مرحلة الانطلاق | 2026-01", name:"جاهزية الموارد (المالية، البشرية، التقنية)", unit:"%", target:95, better:"high",
-            def:"قياس جاهزية الموارد وفق الخطة (Budget/Staffing/Tech Readiness).",
-            owner:"مالك المبادرة + المالية + التقنية",
-            source:"خطة الموارد + تقارير جاهزية",
-            evidence:["خطة مالية معتمدة","تأكيد إسناد الموارد البشرية","محاضر جاهزية تقنية/بيئة تشغيل"],
-            risk:"قصور الموارد يعرقل الإطلاق ويؤدي لارتفاع التكاليف لاحقًا.",
-            formula:"(الموارد الجاهزة ÷ المخطط لها) × 100",
-            base:95, volatility:"med"
-          },
-          {id:"launch_decision", level:"exec", stage:"مرحلة الانطلاق | 2026-01", name:"إصدار قرار/تعميم الإطلاق ضمن الإطار الزمني", unit:"%", target:100, better:"high",
-            def:"التزام إصدار قرار/تعميم الإطلاق خلال الإطار الزمني المحدد.",
-            owner:"المالك + الشؤون الإدارية",
-            source:"قرار/تعميم",
-            evidence:["قرار إطلاق رسمي","رقم وتاريخ التعميم","خطة نشر القرار للجهات المعنية"],
-            risk:"بدون قرار إطلاق يصبح التنفيذ غير ملزم للجهات.",
-            formula:"(تم الإصدار ضمن الإطار؟ نعم=100 / لا=0)",
-            base:88, volatility:"med"
-          },
-
-          /* --- Quick Wins | 2026-03 --- */
-          {id:"qw_one", level:"sup", stage:"مرحلة الفوز السريع | 2026-03", name:"تحقيق إنجاز واحد قابل للقياس خلال ≤ 60 يومًا", unit:"%", target:100, better:"high",
-            def:"تحقيق Quick Win واحد مع قياس أثر واضح واعتماد رسمي.",
-            owner:"PM + فرق التنفيذ",
-            source:"تقرير مخرج + اعتماد",
-            evidence:["تقرير Quick Win","مخرج/خدمة منشورة","اعتماد الجهة المالكة"],
-            risk:"غياب إنجاز مبكر يقلل الزخم والدعم.",
-            formula:"(تم الإنجاز والاعتماد؟ نعم=100 / لا=0)",
-            base:84, volatility:"high"
-          },
-          {id:"qw_schedule", level:"sup", stage:"مرحلة الفوز السريع | 2026-03", name:"نسبة الالتزام بالجدول الزمني", unit:"%", target:90, better:"high",
-            def:"الالتزام بإنجاز الأنشطة ضمن خطة الفوز السريع.",
-            owner:"PMO",
-            source:"خطة + تقارير تقدم",
-            evidence:["Baseline","تحديث أسبوعي","تحليل الانحراف"],
-            risk:"تأخر الفوز السريع يضعف ثقة أصحاب المصلحة.",
-            formula:"(أنشطة منجزة ÷ أنشطة مخطط لها) × 100",
-            base:91, volatility:"med"
-          },
-          {id:"qw_stake", level:"sup", stage:"مرحلة الفوز السريع | 2026-03", name:"رضا أصحاب المصلحة الأوائل", unit:"%", target:80, better:"high",
-            def:"رضا أصحاب المصلحة المبكرين عن القيمة المتحققة.",
-            owner:"تجربة العميل + PM",
-            source:"استبيانات + مقابلات",
-            evidence:["CSAT مبكر","ملاحظات مقابلات","تحليل شكاوى"],
-            risk:"رضا منخفض مبكرًا يهدد استمرارية الدعم.",
-            formula:"(نقاط الرضا ÷ أعلى نقاط) × 100",
-            base:82, volatility:"med"
-          },
-          {id:"qw_count", level:"sup", stage:"مرحلة الفوز السريع | 2026-03", name:"عدد Quick Wins المنجزة", unit:"", target:1, better:"high",
-            def:"عدد المخرجات السريعة المعتمدة رسميًا.",
-            owner:"PM + فرق التنفيذ",
-            source:"اعتمادات + تقارير",
-            evidence:["مخرج/خدمة","محضر اعتماد","تقرير أثر"],
-            risk:"بدون Quick Win لا يوجد دليل مبكر على النجاح.",
-            formula:"عدد المخرجات المعتمدة",
-            base:1, volatility:"med"
-          },
-          {id:"qw_doc", level:"sup", stage:"مرحلة الفوز السريع | 2026-03", name:"توثيق إنجاز معتمد (تقرير/مخرج/خدمة)", unit:"%", target:100, better:"high",
-            def:"توثيق الإنجاز رسميًا (إثبات/تقرير/اعتماد).",
-            owner:"PMO",
-            source:"أرشفة + اعتماد",
-            evidence:["تقرير","مستند اعتماد","رابط خدمة/مخرج"],
-            risk:"ضعف التوثيق = إنجاز غير قابل للإثبات.",
-            formula:"(تم التوثيق؟ نعم=100 / لا=0)",
-            base:90, volatility:"med"
-          },
-
-          /* --- Extra Objective | 2026-04 --- */
-          {id:"extra_approve", level:"exec", stage:"مرحلة الهدف الإضافي | 2026-04", name:"اعتماد الهدف الإضافي من الجهة المالكة", unit:"%", target:100, better:"high",
-            def:"اعتماد رسمي للهدف الإضافي (Scope Change) من الجهة المالكة.",
-            owner:"المالك + لجنة التوجيه",
-            source:"محضر/قرار اعتماد",
-            evidence:["قرار اعتماد","تحديث نطاق","تقييم أثر"],
-            risk:"هدف إضافي غير معتمد يسبب تضخم نطاق.",
-            formula:"(تم الاعتماد؟ نعم=100 / لا=0)",
-            base:86, volatility:"med"
-          },
-          {id:"extra_align", level:"exec", stage:"مرحلة الهدف الإضافي | 2026-04", name:"مواءمة الهدف الإضافي مع الهدف الرئيسي", unit:"%", target:100, better:"high",
-            def:"تحقق المواءمة بنسبة كاملة مع الهدف الرئيسي ومؤشراته.",
-            owner:"PMO + التحليل",
-            source:"وثيقة مواءمة",
-            evidence:["Mapping","تحليل توافق","تحديث مؤشرات"],
-            risk:"هدف إضافي غير مواءم يشتت الموارد.",
-            formula:"(بنود المواءمة المكتملة ÷ المطلوبة) × 100",
-            base:91, volatility:"med"
-          },
-          {id:"extra_budget", level:"exec", stage:"مرحلة الهدف الإضافي | 2026-04", name:"عدم تجاوز الميزانية المعتمدة (±5%)", unit:"%", target:95, better:"high",
-            def:"الإنفاق ضمن هامش ±5% عن المعتمد.",
-            owner:"المالية + PMO",
-            source:"تقارير مالية",
-            evidence:["صرف","التزامات","موافقات تغيير"],
-            risk:"تجاوز مالي يوقف المبادرة أو يقلل الجودة.",
-            formula:"(الإنفاق ضمن الهامش ÷ المعتمد) × 100",
-            base:93, volatility:"med"
-          },
-          {id:"extra_timeline", level:"exec", stage:"مرحلة الهدف الإضافي | 2026-04", name:"عدم تأخير الجدول الزمني الأساسي", unit:"%", target:100, better:"high",
-            def:"عدم تأثير الهدف الإضافي على baseline الزمن.",
-            owner:"PMO",
-            source:"Schedule Impact",
-            evidence:["تحليل تأثير","تحديث الخطة","محضر موافقة"],
-            risk:"تأخير baseline يقلل الثقة ويزيد المخاطر.",
-            formula:"(لا يوجد تأخير؟ نعم=100 / لا=0)",
-            base:88, volatility:"med"
-          },
-          {id:"extra_effect", level:"sup", stage:"مرحلة الهدف الإضافي | 2026-04", name:"وضوح أثر الهدف الإضافي على المؤشر العام", unit:"%", target:100, better:"high",
-            def:"وضوح أثر الهدف الإضافي على المؤشر العام للمبادرة.",
-            owner:"التحليل + PMO",
-            source:"نموذج أثر",
-            evidence:["Impact model","سيناريوهات","عرض للجنة"],
-            risk:"هدف إضافي بلا أثر واضح = عبء على التنفيذ.",
-            formula:"(نموذج أثر مكتمل ÷ مطلوب) × 100",
-            base:84, volatility:"high"
-          },
-
-          /* --- Proof & Partnerships | 2026-06 --- */
-          {id:"proof_doc", level:"sup", stage:"مرحلة دليل الإنجاز والشراكات | 2026-06", name:"توفر دليل عملي موثق (Pilot/Case Study/تقرير أثر أولي)", unit:"%", target:100, better:"high",
-            def:"توفر دليل عملي موثق يثبت الجدوى (Pilot/Case Study).",
-            owner:"PM + التحليل",
-            source:"تقرير Pilot/Case",
-            evidence:["Pilot","Case Study","تقرير أثر أولي"],
-            risk:"غياب الدليل يقلل جاهزية التسويق.",
-            formula:"(الدليل متوفر؟ نعم=100 / لا=0)",
-            base:90, volatility:"med"
-          },
-          {id:"proof_mous", level:"exec", stage:"مرحلة دليل الإنجاز والشراكات | 2026-06", name:"عدد الشراكات أو مذكرات التفاهم", unit:"", target:2, better:"high",
-            def:"عدد MoU/شراكات المعتمدة والفعالة.",
-            owner:"المالك + العلاقات",
-            source:"اتفاقيات",
-            evidence:["MoU","محضر اجتماع","خطة تنفيذ"],
-            risk:"شراكات شكلية بلا تنفيذ.",
-            formula:"عدد الاتفاقيات المعتمدة",
-            base:2, volatility:"med"
-          },
-          {id:"proof_meetings", level:"sup", stage:"مرحلة دليل الإنجاز والشراكات | 2026-06", name:"عدد الاجتماعات الاستراتيجية المنفذة", unit:"", target:3, better:"high",
-            def:"عدد الاجتماعات الاستراتيجية المنفذة ضمن المرحلة.",
-            owner:"PMO + العلاقات",
-            source:"محاضر اجتماعات",
-            evidence:["Agenda","Minutes","قرارات"],
-            risk:"ضعف التنسيق الاستراتيجي يضعف التنفيذ.",
-            formula:"عدد الاجتماعات المنفذة",
-            base:3, volatility:"med"
-          },
-          {id:"proof_quality", level:"sup", stage:"مرحلة دليل الإنجاز والشراكات | 2026-06", name:"نسبة الالتزام بجودة المخرجات", unit:"%", target:90, better:"high",
-            def:"نسبة مطابقة المخرجات لمعايير الجودة.",
-            owner:"QA + PM",
-            source:"Checklists",
-            evidence:["QA Checklist","Acceptance","ملاحظات معالجة"],
-            risk:"انخفاض الجودة = إعادة عمل وتأخير.",
-            formula:"(مخرجات مقبولة ÷ إجمالي) × 100",
-            base:88, volatility:"med"
-          },
-          {id:"proof_ready_mkt", level:"exec", stage:"مرحلة دليل الإنجاز والشراكات | 2026-06", name:"جاهزية الانتقال للمرحلة التسويقية (اعتماد رسمي)", unit:"%", target:100, better:"high",
-            def:"اعتماد رسمي لجاهزية التسويق بناءً على دليل/جودة/شراكات.",
-            owner:"لجنة التوجيه",
-            source:"قرار اعتماد",
-            evidence:["محضر اعتماد","خطة حملة","رسائل أساسية"],
-            risk:"تسويق قبل الجاهزية يضر السمعة.",
-            formula:"(تم الاعتماد؟ نعم=100 / لا=0)",
-            base:86, volatility:"med"
-          },
-
-          /* --- Marketing | 2026-07 --- */
-          {id:"mkt_launch", level:"sup", stage:"مرحلة الحملة التسويقية | 2026-07", name:"إطلاق حملة تسويقية معتمدة خلال الموعد", unit:"%", target:100, better:"high",
-            def:"إطلاق الحملة وفق الخطة والموعد المعتمد.",
-            owner:"التسويق + التواصل",
-            source:"خطة حملة",
-            evidence:["خطة منشورات","موافقة محتوى","تاريخ إطلاق"],
-            risk:"تأخير الحملة يقلل الزخم.",
-            formula:"(تم الإطلاق في الموعد؟ نعم=100 / لا=0)",
-            base:88, volatility:"med"
-          },
-          {id:"mkt_reach", level:"sup", stage:"مرحلة الحملة التسويقية | 2026-07", name:"نسبة الوصول المستهدف (Reach) حسب الخطة", unit:"%", target:100, better:"high",
-            def:"الوصول الفعلي مقارنة بالمستهدف.",
-            owner:"التسويق",
-            source:"Analytics",
-            evidence:["تقارير منصات","UTM","لوحة وصول"],
-            risk:"ضعف الوصول يقلل الاستفسارات.",
-            formula:"(الوصول الفعلي ÷ المستهدف) × 100",
-            base:81, volatility:"high"
-          },
-          {id:"mkt_engage", level:"sup", stage:"مرحلة الحملة التسويقية | 2026-07", name:"معدل التفاعل (Engagement Rate) مقارنة بالمستهدف", unit:"%", target:100, better:"high",
-            def:"التفاعل الفعلي مقارنة بالمستهدف.",
-            owner:"التواصل",
-            source:"Analytics",
-            evidence:["ER","CTR","تعليقات"],
-            risk:"تفاعل ضعيف يعني رسالة غير مقنعة.",
-            formula:"(تفاعل فعلي ÷ مستهدف) × 100",
-            base:84, volatility:"high"
-          },
-          {id:"mkt_evidence", level:"sup", stage:"مرحلة الحملة التسويقية | 2026-07", name:"استخدام أدلة واقعية في 100% من الرسائل", unit:"%", target:100, better:"high",
-            def:"كل رسالة تسويقية مدعومة بدليل/رقم/قصة واقعية.",
-            owner:"التواصل + PMO",
-            source:"مراجعة محتوى",
-            evidence:["قائمة أدلة","مراجعة نصوص","موافقات"],
-            risk:"رسائل بلا أدلة تقلل الثقة.",
-            formula:"(رسائل مدعومة ÷ إجمالي الرسائل) × 100",
-            base:92, volatility:"med"
-          },
-          {id:"mkt_leads", level:"sup", stage:"مرحلة الحملة التسويقية | 2026-07", name:"عدد طلبات الاهتمام/الاستفسارات الناتجة عن الحملة", unit:"", target:60, better:"high",
-            def:"عدد الاستفسارات والطلبات الناتجة عن الحملة خلال الفترة.",
-            owner:"التسويق + تجربة العميل",
-            source:"CRM/Forms",
-            evidence:["سجل طلبات","مصدر الطلب","تحويلات"],
-            risk:"ضعف الطلبات يعني خلل قناة/رسالة.",
-            formula:"عدد الطلبات خلال الفترة",
-            base:54, volatility:"high"
-          },
-
-          /* --- Field Execution | 2026-08 --- */
-          {id:"ops_stability", level:"ops", stage:"مرحلة التطبيق على أرض الواقع | 2026-08", name:"تشغيل المبادرة ميدانيًا دون أعطال حرجة", unit:"%", target:100, better:"high",
-            def:"عدم حدوث أعطال حرجة تؤثر على التشغيل.",
-            owner:"التشغيل + التقنية",
-            source:"سجل أعطال",
-            evidence:["Incident log","RCA","إجراءات منع التكرار"],
-            risk:"أعطال حرجة تؤثر على الثقة.",
-            formula:"(أيام تشغيل دون أعطال حرجة ÷ إجمالي أيام التشغيل) × 100",
-            base:93, volatility:"med"
-          },
-          {id:"ops_benef", level:"ops", stage:"مرحلة التطبيق على أرض الواقع | 2026-08", name:"عدد المستفيدين الفعليين مقارنة بالمستهدف", unit:"", target:1000, better:"high",
-            def:"عدد المستفيدين خلال الفترة مقارنة بالمستهدف.",
-            owner:"التشغيل",
-            source:"Logs",
-            evidence:["Counts","Sessions","Reports"],
-            risk:"تبني أقل من المتوقع.",
-            formula:"مجموع المستفيدين خلال الفترة",
-            base:982, volatility:"high"
-          },
-          {id:"ops_time", level:"ops", stage:"مرحلة التطبيق على أرض الواقع | 2026-08", name:"زمن تقديم الخدمة/التجربة ≤ الزمن المخطط", unit:"دقيقة", target:10, better:"low",
-            def:"متوسط زمن تقديم الخدمة خلال الفترة.",
-            owner:"التشغيل + الجودة",
-            source:"Queue/Service logs",
-            evidence:["Queue time","Service time","تحليل اختناقات"],
-            risk:"زمن مرتفع يقلل الرضا.",
-            formula:"متوسط زمن الخدمة بالدقائق",
-            base:9.2, volatility:"med"
-          },
-          {id:"ops_csat", level:"ops", stage:"مرحلة التطبيق على أرض الواقع | 2026-08", name:"نسبة رضا المستفيدين", unit:"%", target:85, better:"high",
-            def:"نتيجة رضا المستفيدين (CSAT) خلال الفترة.",
-            owner:"تجربة العميل",
-            source:"استبيانات",
-            evidence:["CSAT","شكاوى","تعليقات"],
-            risk:"انخفاض الرضا يؤثر على السمعة.",
-            formula:"(نقاط الرضا ÷ أعلى نقاط) × 100",
-            base:86, volatility:"med"
-          },
-          {id:"ops_ready", level:"ops", stage:"مرحلة التطبيق على أرض الواقع | 2026-08", name:"جاهزية التشغيل دون تدخلات استثنائية", unit:"%", target:90, better:"high",
-            def:"نسبة العمليات التي تتم دون تدخلات استثنائية.",
-            owner:"التشغيل + PMO",
-            source:"تقارير تشغيل",
-            evidence:["Exceptions log","SOP adherence","متابعة يومية"],
-            risk:"الاعتماد على تدخلات = هشاشة تشغيل.",
-            formula:"(عمليات دون استثناء ÷ إجمالي العمليات) × 100",
-            base:89, volatility:"med"
-          },
-
-          /* --- Impact | 2026-10 --- */
-          {id:"impact_quant", level:"exec", stage:"مرحلة قياس الأثر | 2026-10", name:"قياس الأثر الكمي", unit:"%", target:100, better:"high",
-            def:"وجود قياس كمي معتمد (توفير، نمو، زمن، نسب).",
-            owner:"التحليل + PMO",
-            source:"تقرير أثر",
-            evidence:["أرقام توفير","تحسين زمن","نمو"],
-            risk:"بدون أرقام يصبح الأثر ادعاء.",
-            formula:"(محاور القياس المكتملة ÷ المطلوبة) × 100",
-            base:84, volatility:"med"
-          },
-          {id:"impact_qual", level:"exec", stage:"مرحلة قياس الأثر | 2026-10", name:"قياس الأثر النوعي", unit:"%", target:100, better:"high",
-            def:"قياس نوعي (تحسين تجربة، رضا، ثقة).",
-            owner:"تجربة العميل + التحليل",
-            source:"استبيانات + مقابلات",
-            evidence:["رحلة عميل","مقابلات","تحليل شكاوى"],
-            risk:"أثر نوعي غير مقاس يقلل موثوقية التقرير.",
-            formula:"(محاور القياس النوعي المكتملة ÷ المطلوبة) × 100",
-            base:82, volatility:"med"
-          },
-          {id:"impact_okrs", level:"exec", stage:"مرحلة قياس الأثر | 2026-10", name:"تحقيق ≥ 80% من الأهداف الاستراتيجية", unit:"%", target:80, better:"high",
-            def:"نسبة تحقق الأهداف الاستراتيجية المعتمدة.",
-            owner:"لجنة التوجيه + PMO",
-            source:"لوحة OKRs",
-            evidence:["نتائج OKRs","تحقق KPIs","محضر مراجعة"],
-            risk:"تحقق منخفض يعني خلل تصميم/تنفيذ.",
-            formula:"(الأهداف المتحققة ÷ إجمالي الأهداف) × 100",
-            base:78, volatility:"med"
-          },
-          {id:"impact_lessons", level:"sup", stage:"مرحلة قياس الأثر | 2026-10", name:"توثيق الدروس المستفادة والتوصيات", unit:"%", target:100, better:"high",
-            def:"توثيق Lessons Learned وإجراءات التحسين.",
-            owner:"PMO",
-            source:"تقرير Lessons",
-            evidence:["سجل دروس","توصيات","خطة تحسين"],
-            risk:"بدون دروس تتكرر الأخطاء.",
-            formula:"(تم التوثيق؟ نعم=100 / لا=0)",
-            base:86, volatility:"med"
-          },
-          {id:"impact_approve", level:"exec", stage:"مرحلة قياس الأثر | 2026-10", name:"اعتماد تقرير الأثر من لجنة التوجيه", unit:"%", target:100, better:"high",
-            def:"اعتماد رسمي لتقرير الأثر.",
-            owner:"لجنة التوجيه",
-            source:"محضر اعتماد",
-            evidence:["محضر اعتماد","نسخة التقرير","ملاحظات معالجة"],
-            risk:"تقرير غير معتمد لا يمكن البناء عليه.",
-            formula:"(تم الاعتماد؟ نعم=100 / لا=0)",
-            base:84, volatility:"med"
-          },
-
-          /* --- Close | 2026-12 --- */
-          {id:"close_tasks", level:"sup", stage:"مرحلة الإغلاق | 2026-12", name:"إكمال جميع المهام والبنود بنسبة 100%", unit:"%", target:100, better:"high",
-            def:"إغلاق جميع البنود وفق قائمة الإغلاق.",
-            owner:"PMO + الفرق",
-            source:"قائمة إغلاق",
-            evidence:["Checklist","إقفالات","تأكيدات"],
-            risk:"بنود مفتوحة تسبب مشاكل بعد الإغلاق.",
-            formula:"(بنود مغلقة ÷ إجمالي البنود) × 100",
-            base:88, volatility:"med"
-          },
-          {id:"close_fin", level:"exec", stage:"مرحلة الإغلاق | 2026-12", name:"إغلاق مالي وإداري دون ملاحظات جوهرية", unit:"%", target:100, better:"high",
-            def:"إغلاق مالي وإداري مع معالجة الملاحظات.",
-            owner:"المالية + الإدارة",
-            source:"تقارير تدقيق",
-            evidence:["تقرير مالي","تسويات","اعتماد"],
-            risk:"ملاحظات جوهرية تؤثر على السمعة والحوكمة.",
-            formula:"(لا توجد ملاحظات جوهرية؟ نعم=100 / لا=0)",
-            base:86, volatility:"med"
-          },
-          {id:"close_report", level:"exec", stage:"مرحلة الإغلاق | 2026-12", name:"إصدار تقرير إغلاق معتمد", unit:"%", target:100, better:"high",
-            def:"تقرير إغلاق نهائي معتمد رسميًا.",
-            owner:"PMO",
-            source:"تقرير إغلاق",
-            evidence:["نسخة تقرير","محضر اعتماد","ملحقات"],
-            risk:"بدون تقرير لا يوجد نقل معرفة.",
-            formula:"(تم الإصدار والاعتماد؟ نعم=100 / لا=0)",
-            base:84, volatility:"med"
-          },
-          {id:"close_risks", level:"sup", stage:"مرحلة الإغلاق | 2026-12", name:"توثيق المخاطر المتبقية وخطط المعالجة", unit:"%", target:100, better:"high",
-            def:"توثيق المخاطر المتبقية وخططها.",
-            owner:"GRC/PMO",
-            source:"Risk Register",
-            evidence:["Risk register","خطط معالجة","ملاك مخاطر"],
-            risk:"مخاطر غير موثقة تتحول لمشاكل تشغيل.",
-            formula:"(مخاطر موثقة بخطط ÷ إجمالي المخاطر المتبقية) × 100",
-            base:82, volatility:"med"
-          },
-          {id:"close_knowledge", level:"sup", stage:"مرحلة الإغلاق | 2026-12", name:"جاهزية البيانات والمعرفة للأرشفة أو النقل", unit:"%", target:100, better:"high",
-            def:"تجهيز البيانات والمعرفة للأرشفة/النقل.",
-            owner:"البيانات + PMO",
-            source:"أرشفة",
-            evidence:["مجلدات منظمة","قاموس بيانات","صلاحيات وصول"],
-            risk:"فقد المعرفة يضر الاستدامة.",
-            formula:"(عناصر جاهزة ÷ عناصر مطلوبة) × 100",
-            base:85, volatility:"med"
-          },
-
-          /* --- Relaunch | 2027-01 --- */
-          {id:"re_model", level:"exec", stage:"مرحلة إعادة الانطلاق | 2027-01", name:"تحديث النموذج التشغيلي بناءً على نتائج الأثر", unit:"%", target:100, better:"high",
-            def:"تحديث النموذج التشغيلي بناء على تقرير الأثر.",
-            owner:"المالك + التشغيل",
-            source:"نموذج تشغيلي",
-            evidence:["Operating model v2","Process updates","SOPs"],
-            risk:"بدون تحديث لن يتحسن الأداء.",
-            formula:"(مكونات النموذج المحدثة ÷ المطلوبة) × 100",
-            base:84, volatility:"med"
-          },
-          {id:"re_kpis", level:"exec", stage:"مرحلة إعادة الانطلاق | 2027-01", name:"تحسين المؤشرات الرئيسية مقارنة بالدورة السابقة", unit:"%", target:100, better:"high",
-            def:"تحسن ملموس بالمؤشرات الأساسية مقارنة بالدورة السابقة.",
-            owner:"PMO + التحليل",
-            source:"مقارنة دورات",
-            evidence:["Trend","Comparison report","قرارات تحسين"],
-            risk:"ثبات الأداء يعني عدم فعالية التحسين.",
-            formula:"(عدد KPIs المحسّنة ÷ KPIs الأساسية) × 100",
-            base:83, volatility:"med"
-          },
-          {id:"re_ready", level:"exec", stage:"مرحلة إعادة الانطلاق | 2027-01", name:"جاهزية دورة جديدة بنسبة ≥ 95%", unit:"%", target:95, better:"high",
-            def:"جاهزية دورة جديدة تشغيلًا ومواردًا.",
-            owner:"المالك + التشغيل + التقنية",
-            source:"Checklists",
-            evidence:["جاهزية موارد","جاهزية تقنية","خطة تشغيل"],
-            risk:"دورة جديدة غير جاهزة تعيد المشاكل.",
-            formula:"(عناصر جاهزة ÷ عناصر مطلوبة) × 100",
-            base:91, volatility:"med"
-          },
-          {id:"re_plan", level:"exec", stage:"مرحلة إعادة الانطلاق | 2027-01", name:"اعتماد خطة التطوير والتحسين", unit:"%", target:100, better:"high",
-            def:"اعتماد خطة تطوير وتحسين رسمية.",
-            owner:"لجنة التوجيه",
-            source:"قرار اعتماد",
-            evidence:["خطة تحسين","محضر اعتماد","خارطة طريق"],
-            risk:"تحسينات غير معتمدة تبقى حبرًا على ورق.",
-            formula:"(تم الاعتماد؟ نعم=100 / لا=0)",
-            base:86, volatility:"med"
-          },
-          {id:"re_launch", level:"exec", stage:"مرحلة إعادة الانطلاق | 2027-01", name:"إطلاق النسخة الجديدة رسميًا", unit:"%", target:100, better:"high",
-            def:"إطلاق رسمي للنسخة الجديدة مع إعلان وتشغيل.",
-            owner:"المالك + التشغيل + التواصل",
-            source:"إعلان + تشغيل",
-            evidence:["إعلان","تشغيل فعلي","تحديثات منصات"],
-            risk:"تأخر الإطلاق يضعف الاستدامة.",
-            formula:"(تم الإطلاق؟ نعم=100 / لا=0)",
-            base:84, volatility:"med"
-          },
-
-          /* --- Transversal (All the time) --- */
-          {id:"x_schedule", level:"exec", stage:"مؤشرات عرضية (تُقاس طوال المبادرة)", name:"نسبة الالتزام بالجدول الزمني العام", unit:"%", target:90, better:"high",
-            def:"التزام شامل بالخطة الزمنية طوال المبادرة.",
-            owner:"PMO",
-            source:"تقارير تقدم",
-            evidence:["Baseline","تقارير تقدم","إجراءات تصحيح"],
-            risk:"تأخر متكرر يضخم المخاطر والتكاليف.",
-            formula:"(منجز وفق الخطة ÷ مخطط) × 100",
-            base:89, volatility:"med"
-          },
-          {id:"x_budget", level:"exec", stage:"مؤشرات عرضية (تُقاس طوال المبادرة)", name:"نسبة الالتزام بالميزانية", unit:"%", target:95, better:"high",
-            def:"الإنفاق ضمن المعتمد طوال المبادرة.",
-            owner:"المالية",
-            source:"تقارير مالية",
-            evidence:["صرف","التزامات","تسويات"],
-            risk:"تجاوز مالي يوقف أو يخفض نطاق العمل.",
-            formula:"(الإنفاق ضمن المعتمد ÷ المعتمد) × 100",
-            base:94, volatility:"med"
-          },
-          {id:"x_risks", level:"sup", stage:"مؤشرات عرضية (تُقاس طوال المبادرة)", name:"عدد المخاطر المفتوحة مقابل المغلقة", unit:"", target:12, better:"low",
-            def:"عدد المخاطر المفتوحة (الأفضل أن تكون منخفضة).",
-            owner:"GRC/PMO",
-            source:"Risk Register",
-            evidence:["مخاطر مفتوحة","مخاطر مغلقة","خطط معالجة"],
-            risk:"مخاطر مفتوحة كثيرة تعني هشاشة تنفيذ.",
-            formula:"عدد المخاطر المفتوحة خلال الفترة",
-            base:9, volatility:"high"
-          },
-          {id:"x_stake", level:"sup", stage:"مؤشرات عرضية (تُقاس طوال المبادرة)", name:"مستوى رضا أصحاب المصلحة", unit:"%", target:85, better:"high",
-            def:"رضا أصحاب المصلحة عن الأداء العام والحوكمة.",
-            owner:"PMO + تجربة العميل",
-            source:"استبيانات + مقابلات",
-            evidence:["CSAT","مقابلات","تحليل شكاوى"],
-            risk:"رضا منخفض يسبب مقاومة وتغيير.",
-            formula:"(نقاط الرضا ÷ أعلى نقاط) × 100",
-            base:83, volatility:"med"
-          },
-          {id:"x_gov", level:"exec", stage:"مؤشرات عرضية (تُقاس طوال المبادرة)", name:"نضج الحوكمة واتخاذ القرار", unit:"%", target:90, better:"high",
-            def:"مدى نضج آليات الحوكمة (لجان، قرارات، تصعيد، وثائق).",
-            owner:"لجنة التوجيه + PMO",
-            source:"محاضر + قرارات",
-            evidence:["Minutes","Decision log","RACI"],
-            risk:"حوكمة ضعيفة = قرارات متأخرة.",
-            formula:"(عناصر نضج مكتملة ÷ عناصر مطلوبة) × 100",
-            base:82, volatility:"med"
-          }
-        ];
-
-        /* ========= deterministic mild variance (more “real”) ========= */
-        function hashStr(s){
-          let h=2166136261;
-          for(let i=0;i<s.length;i++){
-            h^=s.charCodeAt(i);
-            h=Math.imul(h,16777619);
-          }
-          return (h>>>0);
-        }
-        function rand01(seed){
-          seed ^= seed << 13; seed >>>= 0;
-          seed ^= seed >> 17; seed >>>= 0;
-          seed ^= seed << 5;  seed >>>= 0;
-          return (seed >>> 0) / 4294967295;
-        }
-        function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
-        function daysBetween(a,b){
-          const da=new Date(a), db=new Date(b);
-          const diff=(db-da)/(1000*60*60*24);
-          if(!isFinite(diff)) return 0;
-          return Math.abs(Math.round(diff));
-        }
-
-        // ✅ smaller variance than before (realistic)
-        function periodAmp(p){
-          return p==="daily" ? 0.012 :
-                 p==="weekly"? 0.020 :
-                 p==="monthly"?0.028 : 0.035;
-        }
-        function volAmp(v){
-          return v==="low" ? 0.55 : v==="med" ? 0.85 : 1.05;
-        }
-
-        function computeValue(ind){
-          const from = fromInput?.value || "";
-          const to   = toInput?.value || "";
-          const d = (from && to) ? daysBetween(from,to) : 0;
-
-          // up to +2.5% extra drift with long ranges
-          const dateInfluence = clamp(d/120, 0, 1) * 0.025;
-
-          const seed = hashStr(ind.id+"|"+level+"|"+period+"|"+from+"|"+to);
-          const r = rand01(seed);
-          const n = (r - 0.5) * 2; // -1..1
-
-          const amp = (periodAmp(period) + dateInfluence) * volAmp(ind.volatility);
-          let val = ind.base * (1 + n * amp);
-
-          if(ind.unit === "%"){
-            val = Math.round(clamp(val, 0, 100));
-            if(ind.base >= 99) val = 100; // keep 100-ish stable
-          } else if(ind.unit === "دقيقة"){
-            val = Math.round(clamp(val, 0.1, 60) * 10) / 10;
-          } else {
-            val = Math.round(Math.max(0, val));
-            if(ind.target <= 3) val = clamp(val, 0, 8);
-            if(ind.target >= 1000) val = clamp(val, 0, 3500);
-            if(ind.target === 60) val = clamp(val, 0, 180);
-          }
-          return val;
-        }
-
-        function score(ind, value){
-          if(ind.better === "low"){
-            const ratio = ind.target / Math.max(value, 0.0001);
-            return clamp(ratio*100, 0, 100);
-          }
-          const ratio = value / Math.max(ind.target, 0.0001);
-          return clamp(ratio*100, 0, 100);
-        }
-
-        function statusLabel(ind, value){
-          const s = score(ind, value);
-          if(s >= 100) return {label:"مستقر", cls:"good"};
-          if(s >= 90)  return {label:"مراقبة", cls:"warn"};
-          return {label:"تدخل", cls:"bad"};
-        }
-
-        function percentBar(ind, value){
-          if(ind.better === "low"){
-            return clamp((ind.target / Math.max(value,0.0001))*100, 0, 100);
-          }
-          return clamp((value / Math.max(ind.target,0.0001))*100, 0, 100);
-        }
-
-        function labelPeriod(){
-          return period==="daily"?"يومي":period==="weekly"?"أسبوعي":period==="monthly"?"شهري":"ربع سنوي";
-        }
-        function labelLevel(){
-          return level==="exec"?"تنفيذي":level==="sup"?"إشرافي":"تشغيلي";
-        }
-
-        function getItems(){
-          return DATA.filter(x => x.level === level);
-        }
-
-        /* ========= improved detailed actions ========= */
-        function buildActionPlan(ind, st){
-          const base =
-`1) التحقق من سبب الانحراف:
-   - مراجعة مصدر البيانات (${ind.source}) والتأكد من اكتمال الإدخالات للفترة.
-   - مقارنة القيمة الحالية بالمستهدف وتحليل الفجوة (Gap) ومصدرها (عملية/موارد/تقنية).
-
-2) إجراء تصحيحي سريع (48–72 ساعة):
-   - تعيين مالك إجراء واضح + موعد إغلاق.
-   - تنفيذ تعديل مباشر على نقطة الألم الأعلى أثرًا (خطوة خدمة/اعتماد/تنسيق).
-
-3) إجراء جذري (Root Cause خلال 7–10 أيام):
-   - تحليل الأسباب الأساسية (5 Whys) وربطها بخطة منع تكرار.
-   - تحديث SOP/Policy/RACI إذا كان السبب حوكميًا.
-
-4) التحقق والاعتماد:
-   - رفع دليل الإغلاق (Before/After + أرقام) واعتماد الجهة المالكة.
-   - تحديث سجل القرارات والمخاطر.`;
-
-          if(st.label==="مستقر"){
-            return `استمرار مضبوط + تحسين تدريجي:\n${base}\n\n5) تحسين اختياري:\n   - رفع السقف (Stretch Target) أو توسيع نطاق القياس دون التأثير على baseline.`;
-          }
-          if(st.label==="مراقبة"){
-            return `مراقبة نشطة + رفع وتيرة المتابعة:\n${base}\n\n5) تصعيد مشروط:\n   - إذا لم تتحسن القيمة في دورتين متتاليتين، يتم التصعيد للجنة التوجيه بخطة معالجة مختصرة.`;
-          }
-          return `تدخل عاجل + تصعيد رسمي:\n${base}\n\n5) تصعيد فوري:\n   - عرض الانحراف على لجنة التوجيه خلال 72 ساعة مع 3 خيارات قرار (استمرار/تعديل نطاق/تعزيز موارد).`;
-        }
-
-        /* ========= history ========= */
-        function buildHistory(ind){
-          const bars=[];
-          const baseSeed = hashStr(ind.id+"|hist|"+level+"|"+(fromInput.value||"")+"|"+(toInput.value||"")+"|"+period);
-          for(let i=0;i<6;i++){
-            const r = rand01(baseSeed + i*97);
-            const h = 34 + Math.round(r*62);
-            bars.push(h);
-          }
-          return bars;
-        }
-
-        /* ========= Render ========= */
-        let cards = [];
-
-        function render(){
-          grid.innerHTML = "";
-          cards = [];
-
-          const items = getItems();
-
-          subtitle.textContent =
-            `المستوى: ${labelLevel()} • الفترة: ${labelPeriod()}${
-              (fromInput.value && toInput.value) ? ` • (${fromInput.value} → ${toInput.value})` : ""
-            }`;
-
-          items.forEach((ind, idx) => {
-            const value = computeValue(ind);
-            const st = statusLabel(ind, value);
-            const pct = percentBar(ind, value);
-
-            const gap = (ind.better==="low") ? (value - ind.target) : (ind.target - value);
-            const gapAbs = Math.abs(gap);
-
-            const gapText =
-              (ind.unit === "%") ? `${Math.round(gapAbs)}%` :
-              (ind.unit === "دقيقة") ? `${gapAbs.toFixed(1)}` :
-              `${Math.round(gapAbs)}`;
-
-            const ownerShort = ind.owner.split("+")[0].trim();
-
-            const card = document.createElement("div");
-            card.className = "gd-card";
-            card.innerHTML = `
-              <div class="gd-top">
-                <div>
-                  <div class="gd-name">${ind.name}</div>
-                  <div class="gd-meta">${ind.stage} • ${labelPeriod()}</div>
-                </div>
-                <div class="gd-value">
-                  <span class="gd-unit">${ind.unit || ""}</span>${value}
-                </div>
-              </div>
-
-              <div class="gd-status ${st.cls}">
-                <span class="s-dot"></span>
-                ${st.label}
-              </div>
-
-              <div class="gd-bar"><span style="width:${pct.toFixed(0)}%"></span></div>
-
-              <div class="gd-mini">
-                <div class="b"><span>المستهدف</span><strong class="num">${ind.target} ${ind.unit||""}</strong></div>
-                <div class="b"><span>الفجوة</span><strong class="num">${gapText}</strong></div>
-                <div class="b"><span>المالك</span><strong>${ownerShort}</strong></div>
-              </div>
-            `;
-
-            card.addEventListener("click", () => activate(idx));
-            grid.appendChild(card);
-
-            cards.push({ind, value, el:card});
-          });
-
-          activeIdx = Math.max(0, Math.min(activeIdx, cards.length-1));
-          if(cards.length){
-            activate(activeIdx, true);
-          }else{
-            updateOverall([]);
-            details.innerHTML = `
-              <h3>لا توجد مؤشرات لهذا المستوى</h3>
-              <p class="hint">جرّب تغيير المستوى أو الفترة.</p>
-            `;
-          }
-        }
-
-        function updateOverall(list){
-          if(!list.length){
-            overallValue.textContent = "0%";
-            overallBar.style.width = "0%";
-            overallLabel.textContent = "—";
-            overallDot.style.background = "var(--c2)";
-            return;
-          }
-          let sum=0, wsum=0;
-          for(const it of list){
-            const w = (it.ind.unit === "%") ? 1.12 : (it.ind.unit==="دقيقة"?1.05:1.0);
-            sum += score(it.ind, it.value) * w;
-            wsum += w;
-          }
-          const ov = Math.round(sum/wsum);
-          overallValue.textContent = ov + "%";
-          overallBar.style.width = ov + "%";
-
-          const lab = ov>=95 ? "مستقر" : ov>=85 ? "مراقبة" : "تدخل";
-          overallLabel.textContent = lab;
-          overallDot.style.background = (lab==="مستقر") ? "var(--c1)" : (lab==="مراقبة") ? "var(--c3)" : "var(--c2)";
-        }
-
-        function activate(idx, quiet){
-          if(!cards.length || !cards[idx]) return;
-
-          cards.forEach((c,i)=>c.el.classList.toggle("active", i===idx));
-          activeIdx = idx;
-
-          updateOverall(cards);
-
-          const cur = cards[idx];
-          const ind = cur.ind;
-          const val = cur.value;
-          const st = statusLabel(ind, val);
-          const pct = percentBar(ind, val);
-
-          const from = fromInput.value, to = toInput.value;
-          const dateTxt = (from && to) ? `نطاق مخصص: ${from} → ${to}` : `حسب الفترة: ${labelPeriod()}`;
-
-          const evidenceList = ind.evidence.map(x => `• ${x}`).join("\n");
-          const hist = buildHistory(ind);
-          const histHtml = hist.map(h => `<i style="height:${h}%"></i>`).join("");
-
-          const actionPlan = buildActionPlan(ind, st);
-
-          details.innerHTML = `
-            <h3>${ind.name}</h3>
-            <p class="hint">${dateTxt}. اضغط على أي مؤشر لتحديث هذه الصفحة بالتفاصيل والأدلة والإجراء.</p>
-
-            <div class="gd-details-grid">
-              <div class="gd-box">
-                <span>القيمة الحالية</span>
-                <strong class="num">${val} ${ind.unit||""}</strong>
-                <div class="hist">${histHtml}</div>
-              </div>
-
-              <div class="gd-box">
-                <span>المستهدف</span>
-                <strong class="num">${ind.target} ${ind.unit||""}</strong>
-                <span style="margin-top:10px; display:block;">نسبة التقدم</span>
-                <strong class="num">${pct.toFixed(0)}%</strong>
-              </div>
-
-              <div class="gd-box">
-                <span>حالة الحوكمة</span>
-                <strong>${st.label}</strong>
-                <span style="margin-top:10px; display:block;">تعريف المؤشر</span>
-                <strong>${ind.def}</strong>
-              </div>
-
-              <div class="gd-box">
-                <span>المالك + مصدر البيانات</span>
-                <strong>${ind.owner}</strong>
-                <span style="margin-top:10px; display:block;">المصدر</span>
-                <strong>${ind.source}</strong>
-              </div>
-
-              <div class="gd-box">
-                <span>الأدلة الداعمة</span>
-                <strong>${evidenceList}</strong>
-              </div>
-
-              <div class="gd-box">
-                <span>المخاطر المرتبطة</span>
-                <strong>${ind.risk}</strong>
-                <span style="margin-top:10px; display:block;">طريقة الاحتساب</span>
-                <strong>${ind.formula}</strong>
-              </div>
-
-              <div class="gd-box">
-                <span>الإجراء المقترح (تفصيلي وقابل للتنفيذ)</span>
-                <strong>${actionPlan}</strong>
-              </div>
-            </div>
-          `;
-
-          if(!quiet){
-            details.scrollIntoView({behavior:"smooth", block:"start"});
-          }
-        }
-
-        /* ========= Bind controls ========= */
-        levelButtons.forEach(btn=>{
-          btn.addEventListener("click", ()=>{
-            levelButtons.forEach(b=>b.classList.remove("active"));
-            btn.classList.add("active");
-            level = btn.getAttribute("data-level") || "exec";
-            activeIdx = 0;
-            render();
-          });
-        });
-
-        periodButtons.forEach(btn=>{
-          btn.addEventListener("click", ()=>{
-            periodButtons.forEach(b=>b.classList.remove("active"));
-            btn.classList.add("active");
-            period = btn.getAttribute("data-period") || "daily";
-            render();
-          });
-        });
-
-        if(fromInput) fromInput.addEventListener("change", render);
-        if(toInput) toInput.addEventListener("change", render);
-
-        /* ========= Init ========= */
-        render();
-
-      }catch(e){
-        /* swallow errors to avoid Odoo modal */
+<script>
+(function(){
+  try{
+    const $ = (s, root=document) => root.querySelector(s);
+    const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+
+    const grid = $("#grid");
+    const details = $("#details");
+    const subtitle = $("#subtitle");
+
+    const overallVal = $("#overallVal");
+    const overallBar = $("#overallBar");
+    const overallLabel = $("#overallLabel");
+    const overallDot = $("#overallDot");
+    const sumKpis = $("#sumKpis");
+
+    const fromInput = $("#from");
+    const toInput = $("#to");
+
+    const levelBtns = $$("[data-level]");
+    const periodBtns = $$("[data-period]");
+
+    const filterDomain = $("#filterDomain");
+    const filterOwner  = $("#filterOwner");
+    const filterStatus = $("#filterStatus");
+    const sortBy = $("#sortBy");
+
+    const btnPresent = $("#btnPresent");
+    const btnReset = $("#btnReset");
+
+    let level = "exec";
+    let period = "daily";
+    let activeIdx = 0;
+
+    /* =========================
+       KPI CATALOG (General Governance)
+       - Domains: Strategy, Risk, Compliance, Data, Security, Finance, Delivery, CX, Ops, People
+       - Stable base values closer to reality (not all 90+)
+       ========================= */
+    const DATA = [
+      /* EXEC (governance/strategy) */
+      { id:"gov_decision_log", level:"exec", domain:"الحوكمة والقرار", name:"اكتمال سجل القرارات والتصعيد", unit:"%", target:100, better:"high",
+        def:"توثيق قرارات اللجان والتصعيدات مع المبررات والتواريخ وملاك الإجراء.",
+        owner:"لجنة التوجيه", source:"Minutes/Decision Log",
+        evidence:["سجل قرارات محدث","محاضر لجنة","قائمة إجراءات مرتبطة بالقرار"],
+        risk:"قرارات غير موثقة تؤدي لتضارب تنفيذ وتأخر معالجة الانحرافات.",
+        formula:"(قرارات موثقة ÷ القرارات الفعلية) × 100",
+        base:92, volatility:"low", last:"قبل 2 يوم", trend:"up"
+      },
+      { id:"gov_policy_coverage", level:"exec", domain:"السياسات والامتثال", name:"تغطية السياسات الأساسية", unit:"%", target:95, better:"high",
+        def:"نسبة السياسات الحاكمة المعتمدة والمطبقة (حوكمة، أمن، خصوصية، مشتريات، تعاقدات).",
+        owner:"الامتثال", source:"Policy Register",
+        evidence:["Policy register","اعتمادات","خطة نشر/تطبيق"],
+        risk:"قصور السياسات يرفع مخاطر الالتزام ويضعف المساءلة.",
+        formula:"(سياسات معتمدة ومطبقة ÷ سياسات مطلوبة) × 100",
+        base:88, volatility:"med", last:"قبل 5 أيام", trend:"flat"
+      },
+      { id:"gov_okrs_ach", level:"exec", domain:"الاستراتيجية والأداء", name:"تحقق أهداف الأداء الاستراتيجي", unit:"%", target:85, better:"high",
+        def:"نسبة تحقق أهداف الأداء المرتبطة بالحوكمة وفق OKRs/KPIs المعتمدة.",
+        owner:"PMO", source:"Performance Dashboard",
+        evidence:["لوحة OKRs","تحديث شهري","تحليل فجوات"],
+        risk:"تحقق منخفض يعني خلل تصميم/تنفيذ أو ضعف متابعة.",
+        formula:"(الأهداف المتحققة ÷ إجمالي الأهداف) × 100",
+        base:82, volatility:"med", last:"قبل أسبوع", trend:"down"
+      },
+      { id:"fin_budget_control", level:"exec", domain:"المالية", name:"الالتزام بالميزانية ضمن الهامش", unit:"%", target:95, better:"high",
+        def:"الإنفاق ضمن المعتمد مع ضبط التغييرات (±5%) وإظهار الانحرافات بوضوح.",
+        owner:"المالية", source:"Financial Reports",
+        evidence:["تقرير صرف","سجل تغييرات","تسويات"],
+        risk:"تجاوز مالي يهدد الاستدامة ويؤخر الأولويات.",
+        formula:"(الإنفاق ضمن الهامش ÷ المعتمد) × 100",
+        base:93, volatility:"low", last:"قبل 3 أيام", trend:"up"
+      },
+      { id:"risk_open_count", level:"exec", domain:"المخاطر", name:"عدد المخاطر الحرجة المفتوحة", unit:"", target:6, better:"low",
+        def:"عدد المخاطر الحرجة المفتوحة (الأفضل أن يكون منخفضًا) مع خطط معالجة وملاك واضحين.",
+        owner:"GRC", source:"Risk Register",
+        evidence:["Risk register","خطط معالجة","تحديث حالة المخاطر"],
+        risk:"مخاطر حرجة مفتوحة تعني احتمالية تعطّل أو خسائر تشغيلية.",
+        formula:"عدد المخاطر الحرجة المفتوحة",
+        base:7, volatility:"high", last:"قبل 4 أيام", trend:"down"
+      },
+
+      /* SUP (delivery/compliance/data) */
+      { id:"del_schedule", level:"sup", domain:"التسليم", name:"الالتزام بالجدول الزمني للخطط", unit:"%", target:90, better:"high",
+        def:"الالتزام بتنفيذ الخطة ضمن الجدول المعتمد مع إدارة الانحرافات.",
+        owner:"PMO", source:"Schedule/Plans",
+        evidence:["Baseline","تحديث أسبوعي","تحليل انحرافات"],
+        risk:"تأخر متكرر يرفع التكلفة ويزيد المخاطر.",
+        formula:"(منجز وفق الخطة ÷ مخطط) × 100",
+        base:87, volatility:"med", last:"قبل يوم", trend:"flat"
+      },
+      { id:"cmp_audit_findings", level:"sup", domain:"السياسات والامتثال", name:"ملاحظات التدقيق الجوهرية", unit:"", target:3, better:"low",
+        def:"عدد الملاحظات الجوهرية غير المغلقة في نتائج التدقيق.",
+        owner:"الامتثال", source:"Audit Reports",
+        evidence:["تقرير تدقيق","خطة إغلاق","إثباتات إغلاق"],
+        risk:"ملاحظات جوهرية قد تتحول لمخالفات أو تعطّل إجراءات.",
+        formula:"عدد الملاحظات الجوهرية المفتوحة",
+        base:4, volatility:"high", last:"قبل 9 أيام", trend:"up"
+      },
+      { id:"data_quality", level:"sup", domain:"البيانات", name:"نضج جودة البيانات (DQ)", unit:"%", target:90, better:"high",
+        def:"نضج جودة البيانات عبر الاكتمال/الدقة/التحديث/الاتساق وفق عينات دورية.",
+        owner:"إدارة البيانات", source:"DQ Checks",
+        evidence:["نتائج فحص DQ","عينات","سجل معالجات"],
+        risk:"جودة بيانات ضعيفة تعطي قرارات مضللة.",
+        formula:"(نتيجة الجودة ÷ المستهدف) × 100",
+        base:84, volatility:"med", last:"قبل أسبوعين", trend:"up"
+      },
+      { id:"sec_access_reviews", level:"sup", domain:"الأمن السيبراني", name:"نسبة مراجعات الصلاحيات المنجزة", unit:"%", target:100, better:"high",
+        def:"إتمام مراجعات الصلاحيات الدورية (Access Review) وإغلاق الاستثناءات.",
+        owner:"الأمن السيبراني", source:"IAM Reviews",
+        evidence:["قوائم مراجعة","نتائج","إقفالات"],
+        risk:"صلاحيات غير مراجعة تعني خطر وصول غير مصرح.",
+        formula:"(مراجعات منجزة ÷ المخطط) × 100",
+        base:91, volatility:"low", last:"قبل 6 أيام", trend:"flat"
+      },
+      { id:"cx_stake", level:"sup", domain:"أصحاب المصلحة", name:"رضا أصحاب المصلحة", unit:"%", target:85, better:"high",
+        def:"رضا أصحاب المصلحة عن الحوكمة والشفافية وسرعة اتخاذ القرار والتواصل.",
+        owner:"تجربة العميل", source:"Surveys/Interviews",
+        evidence:["CSAT","مقابلات","تحليل شكاوى"],
+        risk:"رضا منخفض يرفع مقاومة التغيير.",
+        formula:"(نقاط الرضا ÷ أعلى نقاط) × 100",
+        base:83, volatility:"med", last:"قبل 8 أيام", trend:"down"
+      },
+
+      /* OPS (operations/controls) */
+      { id:"ops_sla", level:"ops", domain:"التشغيل", name:"الالتزام بـ SLA للتعاملات", unit:"%", target:90, better:"high",
+        def:"نسبة الالتزام بزمن الخدمة/المعالجة ضمن SLA المعتمد.",
+        owner:"التشغيل", source:"Ops Logs",
+        evidence:["سجلات زمن","تقارير يومية","تحليل اختناق"],
+        risk:"انخفاض SLA يسبب تكدس وتأثير على جودة الخدمة.",
+        formula:"(طلبات ضمن SLA ÷ إجمالي الطلبات) × 100",
+        base:86, volatility:"med", last:"قبل يوم", trend:"up"
+      },
+      { id:"ops_incidents", level:"ops", domain:"الأمن السيبراني", name:"حوادث أمنية عالية الشدة", unit:"", target:1, better:"low",
+        def:"عدد الحوادث الأمنية ذات الشدة العالية خلال الفترة.",
+        owner:"الأمن السيبراني", source:"Incident Log",
+        evidence:["سجل حوادث","RCA","منع التكرار"],
+        risk:"ارتفاع الحوادث يهدد الثقة والالتزام.",
+        formula:"عدد الحوادث عالية الشدة",
+        base:2, volatility:"high", last:"قبل 12 يوم", trend:"flat"
+      },
+      { id:"ops_change_success", level:"ops", domain:"التغيير والإصدار", name:"نجاح التغييرات بدون Rollback", unit:"%", target:95, better:"high",
+        def:"نسبة التغييرات المنفذة بدون تراجع/فشل بعد النشر.",
+        owner:"التقنية", source:"Change Mgmt",
+        evidence:["Change log","موافقات CAB","نتائج نشر"],
+        risk:"فشل تغييرات يزيد التعطل والتكلفة.",
+        formula:"(تغييرات ناجحة ÷ إجمالي تغييرات) × 100",
+        base:90, volatility:"med", last:"قبل 3 أيام", trend:"up"
+      },
+      { id:"ops_training", level:"ops", domain:"الموارد والقدرات", name:"جاهزية التدريب وتغطية المهارات", unit:"%", target:90, better:"high",
+        def:"تغطية التدريب للمهارات الحرجة وتحديث المواد وفق العمليات.",
+        owner:"الموارد البشرية", source:"Training Records",
+        evidence:["سجل تدريب","حضور","تقييم بعد التدريب"],
+        risk:"ضعف التدريب يسبب أخطاء تشغيلية ويطيل زمن الخدمة.",
+        formula:"(تغطية التدريب ÷ المطلوب) × 100",
+        base:78, volatility:"med", last:"قبل 15 يوم", trend:"up"
       }
-    })();
-  </script>
+    ];
 
-  </body>
+    /* =========================
+       Stable deterministic values
+       - Not random every refresh
+       - Varies when you change period/level/date
+       ========================= */
+    function hashStr(s){
+      let h=2166136261;
+      for(let i=0;i<s.length;i++){
+        h^=s.charCodeAt(i);
+        h=Math.imul(h,16777619);
+      }
+      return (h>>>0);
+    }
+    function rand01(seed){
+      seed ^= seed << 13; seed >>>= 0;
+      seed ^= seed >> 17; seed >>>= 0;
+      seed ^= seed << 5;  seed >>>= 0;
+      return (seed >>> 0) / 4294967295;
+    }
+    function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+    function daysBetween(a,b){
+      const da=new Date(a), db=new Date(b);
+      const diff=(db-da)/(1000*60*60*24);
+      if(!isFinite(diff)) return 0;
+      return Math.abs(Math.round(diff));
+    }
+    function periodAmp(p){
+      // subtle changes only
+      return p==="daily" ? 0.010 :
+             p==="weekly"? 0.016 :
+             p==="monthly"?0.022 : 0.028;
+    }
+    function volAmp(v){
+      return v==="low" ? 0.55 : v==="med" ? 0.85 : 1.10;
+    }
+
+    function computeValue(ind){
+      const from = fromInput?.value || "";
+      const to   = toInput?.value || "";
+      const d = (from && to) ? daysBetween(from,to) : 0;
+      const dateInfluence = clamp(d/160, 0, 1) * 0.020;
+
+      const seed = hashStr(ind.id+"|"+level+"|"+period+"|"+from+"|"+to);
+      const r = rand01(seed);
+      const n = (r - 0.5) * 2; // -1..1
+
+      const amp = (periodAmp(period) + dateInfluence) * volAmp(ind.volatility);
+
+      let val = ind.base * (1 + n * amp);
+
+      if(ind.unit === "%"){
+        val = Math.round(clamp(val, 0, 100));
+      } else if(ind.unit === ""){
+        // counts: keep realistic boundaries
+        val = Math.round(Math.max(0, val));
+        if(ind.target <= 2) val = clamp(val, 0, 6);
+        if(ind.target <= 6) val = clamp(val, 0, 15);
+        if(ind.id==="ops_incidents") val = clamp(val, 0, 6);
+      }
+      return val;
+    }
+
+    function score(ind, value){
+      if(ind.better === "low"){
+        const ratio = ind.target / Math.max(value, 0.0001);
+        return clamp(ratio*100, 0, 100);
+      }
+      const ratio = value / Math.max(ind.target, 0.0001);
+      return clamp(ratio*100, 0, 100);
+    }
+    function statusOf(ind, value){
+      const s = score(ind, value);
+      if(s >= 100) return {label:"مستقر", cls:"good"};
+      if(s >= 90)  return {label:"مراقبة", cls:"warn"};
+      return {label:"تدخل", cls:"bad"};
+    }
+    function pctBar(ind, value){
+      if(ind.better === "low"){
+        return clamp((ind.target / Math.max(value,0.0001))*100, 0, 100);
+      }
+      return clamp((value / Math.max(ind.target,0.0001))*100, 0, 100);
+    }
+    function labelPeriod(){
+      return period==="daily"?"يومي":period==="weekly"?"أسبوعي":period==="monthly"?"شهري":"ربع سنوي";
+    }
+    function labelLevel(){
+      return level==="exec"?"تنفيذي":level==="sup"?"إشرافي":"تشغيلي";
+    }
+    function ownerShort(owner){
+      return owner.split("+")[0].trim();
+    }
+
+    function historyBars(ind){
+      const from = fromInput?.value || "";
+      const to   = toInput?.value || "";
+      const baseSeed = hashStr(ind.id+"|hist|"+level+"|"+period+"|"+from+"|"+to);
+      const bars=[];
+      for(let i=0;i<6;i++){
+        const r = rand01(baseSeed + i*97);
+        const h = 34 + Math.round(r*62);
+        bars.push(h);
+      }
+      return bars;
+    }
+
+    /* =========================
+       Filters + sorting
+       ========================= */
+    function getAllForLevel(){
+      return DATA.filter(x => x.level === level);
+    }
+
+    function initFilterOptions(){
+      // Domains
+      const domains = Array.from(new Set(DATA.map(x=>x.domain))).sort((a,b)=>a.localeCompare(b,'ar'));
+      domains.forEach(d=>{
+        const opt=document.createElement("option");
+        opt.value=d; opt.textContent=d;
+        filterDomain.appendChild(opt);
+      });
+
+      // Owners
+      const owners = Array.from(new Set(DATA.map(x=>x.owner))).sort((a,b)=>a.localeCompare(b,'ar'));
+      owners.forEach(o=>{
+        const opt=document.createElement("option");
+        opt.value=o; opt.textContent=o;
+        filterOwner.appendChild(opt);
+      });
+    }
+
+    function applyFilters(list){
+      const d = filterDomain.value;
+      const o = filterOwner.value;
+      const s = filterStatus.value;
+
+      return list.filter(it=>{
+        if(d!=="all" && it.ind.domain!==d) return false;
+        if(o!=="all" && it.ind.owner!==o) return false;
+        if(s!=="all" && it.st.cls!==s) return false;
+        return true;
+      });
+    }
+
+    function sortList(list){
+      const mode = sortBy.value;
+      if(mode==="name"){
+        return list.sort((a,b)=>a.ind.name.localeCompare(b.ind.name,'ar'));
+      }
+      if(mode==="gap"){
+        return list.sort((a,b)=>b.gapAbs - a.gapAbs);
+      }
+      // risk (bad first, then warn, then good), tie by gap
+      const rank = {bad:0, warn:1, good:2};
+      return list.sort((a,b)=>{
+        const ra=rank[a.st.cls], rb=rank[b.st.cls];
+        if(ra!==rb) return ra-rb;
+        return b.gapAbs - a.gapAbs;
+      });
+    }
+
+    /* =========================
+       Executive summary KPIs (Top 4)
+       ========================= */
+    function buildSummary(list){
+      // compute overall governance health based on scores
+      if(!list.length){
+        overallVal.textContent = "0%";
+        overallBar.style.width = "0%";
+        overallLabel.textContent = "—";
+        overallDot.style.background = "var(--c2)";
+        sumKpis.innerHTML="";
+        return;
+      }
+
+      let sum=0, wsum=0;
+      for(const it of list){
+        const w = (it.ind.unit === "%") ? 1.12 : 1.0;
+        sum += score(it.ind, it.value) * w;
+        wsum += w;
+      }
+      const ov = Math.round(sum/wsum);
+      overallVal.textContent = ov + "%";
+      overallBar.style.width = ov + "%";
+
+      const lab = ov>=95 ? "مستقر" : ov>=85 ? "مراقبة" : "تدخل";
+      overallLabel.textContent = lab;
+      overallDot.style.background = (lab==="مستقر") ? "var(--c1)" : (lab==="مراقبة") ? "var(--c3)" : "var(--c2)";
+
+      // pick 4 headline indicators (logical by domain)
+      const headline = pickHeadlineIndicators();
+      sumKpis.innerHTML = headline.map(h => renderSummaryBox(h, list)).join("");
+    }
+
+    function pickHeadlineIndicators(){
+      // fixed mapping for professionalism
+      return [
+        {key:"الحوكمة", hint:"سجل القرار", selector:(it)=>it.ind.id==="gov_decision_log"},
+        {key:"المخاطر", hint:"حرجة مفتوحة", selector:(it)=>it.ind.id==="risk_open_count"},
+        {key:"الزمن", hint:"التزام الجدول", selector:(it)=>it.ind.id==="del_schedule"},
+        {key:"المالية", hint:"ضبط الميزانية", selector:(it)=>it.ind.id==="fin_budget_control"},
+      ];
+    }
+
+    function renderSummaryBox(h, list){
+      const found = list.find(h.selector);
+      if(!found){
+        return `<div class="sum-box">
+          <div class="t">${h.key}<span class="trend flat">—</span></div>
+          <div class="n"><span class="unit">—</span>—</div>
+          <div class="bar" style="margin-top:10px"><span style="width:0%"></span></div>
+        </div>`;
+      }
+
+      const pct = Math.round(pctBar(found.ind, found.value));
+      const tclass = found.ind.trend==="up"?"up":found.ind.trend==="down"?"down":"flat";
+      const ttext = found.ind.trend==="up"?"تحسن":found.ind.trend==="down"?"تراجع":"ثبات";
+
+      const display = (found.ind.unit==="%")
+        ? `${found.value}<span class="unit">%</span>`
+        : `${found.value}<span class="unit">${found.ind.unit||"عدد"}</span>`;
+
+      return `<div class="sum-box">
+        <div class="t">${h.key} • ${h.hint}<span class="trend ${tclass}">${ttext}</span></div>
+        <div class="n">${display}</div>
+        <div class="bar" style="margin-top:10px"><span style="width:${pct}%"></span></div>
+      </div>`;
+    }
+
+    /* =========================
+       Actions plan (more realistic)
+       ========================= */
+    function actionPlan(ind, st){
+      const base =
+`1) تدقيق القياس خلال 24 ساعة:
+   - تأكيد مصدر البيانات (${ind.source}) + اكتمال الفترة.
+   - مراجعة العينة/الاستثناءات والتأكد من عدم وجود ازدواجية.
+
+2) معالجة سريعة خلال 72 ساعة:
+   - تعيين مالك إجراء + موعد إغلاق واضح.
+   - تنفيذ تدخل مباشر في أعلى نقطة تأثير (اعتماد/صلاحية/خطوة عملية).
+
+3) معالجة جذرية خلال 7–10 أيام:
+   - تحليل السبب الجذري (5 Whys) وربطها بإجراء منع تكرار.
+   - تحديث Policy/SOP/RACI إذا كان السبب حوكميًا.
+
+4) توثيق واعتماد:
+   - توثيق Before/After + رفع دليل الإغلاق.
+   - تحديث سجل القرارات والمخاطر وإقفال الإجراء رسميًا.`;
+
+      if(st.label==="مستقر"){
+        return `استمرار مضبوط + تحسين تدريجي:\n${base}\n\n5) تحسين اختياري:\n   - رفع مستوى النضج أو توسيع نطاق القياس دون التأثير على التشغيل.`;
+      }
+      if(st.label==="مراقبة"){
+        return `مراقبة نشطة + رفع وتيرة المتابعة:\n${base}\n\n5) تصعيد مشروط:\n   - إذا لم تتحسن القيمة لدورتين، يتم التصعيد بخيارات قرار مختصرة.`;
+      }
+      return `تدخل عاجل + تصعيد رسمي:\n${base}\n\n5) تصعيد خلال 72 ساعة:\n   - عرض الانحراف بخيارات قرار (استمرار/تعزيز موارد/تعديل أولويات).`;
+    }
+
+    /* =========================
+       Rendering
+       ========================= */
+    let cards = [];
+
+    function render(){
+      grid.innerHTML="";
+      cards=[];
+
+      const items = getAllForLevel();
+      const rangeTxt = (fromInput.value && toInput.value) ? ` • (${fromInput.value} → ${toInput.value})` : "";
+      subtitle.textContent = `المستوى: ${labelLevel()} • الفترة: ${labelPeriod()}${rangeTxt} • بيانات تشغيلية تقديرية ثابتة نسبيًا`;
+
+      const computed = items.map(ind=>{
+        const value = computeValue(ind);
+        const st = statusOf(ind, value);
+        const pct = pctBar(ind, value);
+
+        const gap = (ind.better==="low") ? (value - ind.target) : (ind.target - value);
+        const gapAbs = Math.abs(gap);
+
+        const gapText =
+          (ind.unit === "%") ? `${Math.round(gapAbs)}%` :
+          `${Math.round(gapAbs)}`;
+
+        return {ind, value, st, pct, gapAbs, gapText};
+      });
+
+      const filtered = applyFilters(computed);
+      const ordered = sortList(filtered);
+
+      buildSummary(ordered);
+
+      if(!ordered.length){
+        grid.innerHTML = "";
+        details.innerHTML = `<h3>لا توجد نتائج</h3>
+          <p class="hint">جرّب تغيير الفلاتر أو المستوى/الفترة.</p>`;
+        return;
+      }
+
+      ordered.forEach((it, idx)=>{
+        const ind = it.ind;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.status = it.st.cls;
+
+        const owner = ownerShort(ind.owner);
+
+        card.innerHTML = `
+          <div class="top">
+            <div>
+              <div class="name">${ind.name}</div>
+              <div class="meta">${ind.domain} • ${labelPeriod()} • آخر تحديث: ${ind.last}</div>
+            </div>
+            <div class="value">
+              <span class="u">${ind.unit || (ind.better==="low" ? "عدد" : "")}</span>
+              <span class="num">${it.value}</span>
+            </div>
+          </div>
+
+          <div class="status">
+            <div class="chipStatus ${it.st.cls}">
+              <span class="s-dot"></span>
+              ${it.st.label}
+            </div>
+            <span class="trend ${ind.trend==="up"?"up":ind.trend==="down"?"down":"flat"}">
+              ${ind.trend==="up"?"تحسن":ind.trend==="down"?"تراجع":"ثبات"}
+            </span>
+          </div>
+
+          <div class="bar" style="margin-top:10px"><span style="width:${Math.round(it.pct)}%"></span></div>
+
+          <div class="mini">
+            <div class="b"><span>المستهدف</span><strong class="num">${ind.target} ${ind.unit||""}</strong></div>
+            <div class="b"><span>الفجوة</span><strong class="num">${it.gapText}</strong></div>
+            <div class="b"><span>المالك</span><strong>${owner}</strong></div>
+          </div>
+        `;
+
+        card.addEventListener("click", ()=> activate(idx, ordered));
+        grid.appendChild(card);
+
+        cards.push({el:card, data:it});
+      });
+
+      activeIdx = Math.max(0, Math.min(activeIdx, cards.length-1));
+      activate(activeIdx, ordered, true);
+    }
+
+    function activate(idx, ordered, quiet){
+      if(!cards.length || !cards[idx]) return;
+      cards.forEach((c,i)=>c.el.classList.toggle("active", i===idx));
+      activeIdx = idx;
+
+      const it = cards[idx].data;
+      const ind = it.ind;
+
+      const from = fromInput.value, to = toInput.value;
+      const dateTxt = (from && to) ? `نطاق مخصص: ${from} → ${to}` : `حسب الفترة: ${labelPeriod()}`;
+      const evidenceList = ind.evidence.map(x => `• ${x}`).join("\n");
+      const hist = historyBars(ind).map(h => `<i style="height:${h}%"></i>`).join("");
+
+      details.innerHTML = `
+        <h3>${ind.name}</h3>
+        <p class="hint">${dateTxt}. المجال: ${ind.domain}. آخر تحديث: ${ind.last}. (البيانات ثابتة نسبيًا لتعكس قياسًا واقعيًا)</p>
+
+        <div class="detailsGrid">
+          <div class="box">
+            <span>القيمة الحالية</span>
+            <strong class="num">${it.value} ${ind.unit||""}</strong>
+            <div class="hist">${hist}</div>
+          </div>
+
+          <div class="box">
+            <span>المستهدف</span>
+            <strong class="num">${ind.target} ${ind.unit||""}</strong>
+            <span style="margin-top:10px; display:block;">نسبة التقدم</span>
+            <strong class="num">${Math.round(it.pct)}%</strong>
+          </div>
+
+          <div class="box">
+            <span>حالة الحوكمة</span>
+            <strong>${it.st.label}</strong>
+            <span style="margin-top:10px; display:block;">تعريف المؤشر</span>
+            <strong>${ind.def}</strong>
+          </div>
+
+          <div class="box">
+            <span>المالك + مصدر البيانات</span>
+            <strong>${ind.owner}</strong>
+            <span style="margin-top:10px; display:block;">المصدر</span>
+            <strong>${ind.source}</strong>
+          </div>
+
+          <div class="box">
+            <span>الأدلة الداعمة</span>
+            <strong>${evidenceList}</strong>
+          </div>
+
+          <div class="box">
+            <span>المخاطر المرتبطة</span>
+            <strong>${ind.risk}</strong>
+            <span style="margin-top:10px; display:block;">طريقة الاحتساب</span>
+            <strong>${ind.formula}</strong>
+          </div>
+
+          <div class="box">
+            <span>الإجراء المقترح (قابل للتنفيذ)</span>
+            <strong>${actionPlan(ind, it.st)}</strong>
+          </div>
+        </div>
+      `;
+
+      if(!quiet) details.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    /* =========================
+       Bind controls
+       ========================= */
+    levelBtns.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        levelBtns.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        level = btn.getAttribute("data-level") || "exec";
+        activeIdx = 0;
+        render();
+      });
+    });
+
+    periodBtns.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        periodBtns.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        period = btn.getAttribute("data-period") || "daily";
+        render();
+      });
+    });
+
+    [fromInput, toInput, filterDomain, filterOwner, filterStatus, sortBy].forEach(el=>{
+      el.addEventListener("change", ()=>{ activeIdx=0; render(); });
+    });
+
+    btnPresent.addEventListener("click", ()=>{
+      document.body.classList.toggle("presentation");
+      btnPresent.classList.toggle("active", document.body.classList.contains("presentation"));
+      btnPresent.textContent = document.body.classList.contains("presentation") ? "إلغاء وضع العرض" : "وضع عرض";
+    });
+
+    btnReset.addEventListener("click", ()=>{
+      fromInput.value = "";
+      toInput.value = "";
+      filterDomain.value = "all";
+      filterOwner.value = "all";
+      filterStatus.value = "all";
+      sortBy.value = "risk";
+      periodBtns.forEach(b=>b.classList.remove("active"));
+      periodBtns[0].classList.add("active");
+      period = "daily";
+      activeIdx = 0;
+      render();
+    });
+
+    /* =========================
+       Init
+       ========================= */
+    initFilterOptions();
+    render();
+
+  }catch(e){
+    // silent
+  }
+})();
+</script>
+</body>
 </html>
-
-</section>
